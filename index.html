@@ -3,523 +3,836 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>REKOD SUHU PETI SEJUK - UNIT FARMASI LOGISTIK PKD SIK</title>
+  <title>REKOD SUHU PETI SEJUK — UNIT FARMASI LOGISTIK PKD SIK</title>
+
+  <!-- Google Fonts & Chart.js -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <style>
     :root {
-      --font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-      --bg-main: #f0f4f9;
+      --font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --bg-main: #f1f5f9;
       --bg-card: #ffffff;
       --bg-subtle: #f8fafc;
       --border-color: #cbd5e1;
       --text-main: #0f172a;
       --text-muted: #64748b;
+      
       --primary: #2563eb;
       --primary-dark: #1e3a8a;
       --primary-light: #eff6ff;
-      --success: #16a34a;
-      --success-bg: #f0fdf4;
+
+      --success: #059669;
+      --success-bg: #ecfdf5;
+      --success-border: #a7f3d0;
+
       --warning: #d97706;
       --warning-bg: #fffbeb;
+      --warning-border: #fde68a;
+
       --danger: #dc2626;
       --danger-bg: #fef2f2;
-      --radius: 12px;
-      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+      --danger-border: #fecaca;
+
+      --radius-lg: 16px;
+      --radius-md: 10px;
+      --radius-sm: 6px;
+
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+      --shadow-md: 0 10px 25px -5px rgba(15, 23, 42, 0.08);
+      --shadow-lg: 0 20px 30px -10px rgba(15, 23, 42, 0.15);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
       font-family: var(--font-family);
       background-color: var(--bg-main);
       color: var(--text-main);
       line-height: 1.5;
-      padding-bottom: 50px;
+      padding-bottom: 60px;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* Banner Header */
-    .header {
-      background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+    /* Header Banner */
+    .app-header {
+      background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #2563eb 100%);
       color: white;
-      padding: 26px 20px 42px;
-      text-align: center;
+      padding: 26px 20px 48px;
       position: relative;
+      box-shadow: 0 4px 20px rgba(30, 58, 138, 0.25);
     }
-    .header h1 { font-size: 1.65rem; font-weight: 800; letter-spacing: 0.02em; }
-    .header p { font-size: 0.95rem; font-weight: 700; opacity: 0.92; margin-top: 4px; letter-spacing: 0.04em; }
 
-    /* Admin Settings Lock Icon */
-    .admin-lock-btn {
-      position: absolute;
-      top: 16px; right: 16px;
-      background: rgba(255,255,255,0.18);
-      border: 1px solid rgba(255,255,255,0.35);
+    .header-container {
+      max-width: 920px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .brand-badge {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .brand-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+    }
+
+    .brand-subtitle {
+      font-size: 0.9rem;
+      opacity: 0.92;
+      font-weight: 600;
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .icon-btn {
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
       color: white;
-      padding: 6px 12px;
-      border-radius: 8px;
-      font-size: 0.78rem;
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 0.82rem;
       font-weight: 700;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
     }
 
-    /* Main Container */
-    .container {
-      max-width: 800px;
-      margin: -20px auto 0;
+    .icon-btn:hover {
+      background: rgba(255, 255, 255, 0.28);
+      transform: translateY(-1px);
+    }
+
+    /* Main Wrapper */
+    .main-wrapper {
+      max-width: 920px;
+      margin: -24px auto 0;
       padding: 0 16px;
       position: relative;
       z-index: 10;
     }
 
-    /* Fridge Tabs */
-    .tabs-grid {
+    /* Refrigerator Switcher Tabs */
+    .location-tabs-card {
+      background: var(--bg-card);
+      padding: 10px;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      margin-bottom: 20px;
+      border: 1px solid var(--border-color);
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 8px;
-      background: #ffffff;
-      padding: 10px;
-      border-radius: var(--radius);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-      margin-bottom: 20px;
-      border: 1.5px solid var(--primary-light);
     }
-    @media (max-width: 600px) {
-      .tabs-grid { grid-template-columns: repeat(2, 1fr); }
+
+    @media (max-width: 640px) {
+      .location-tabs-card { grid-template-columns: repeat(2, 1fr); }
     }
+
     .tab-btn {
       background: var(--bg-subtle);
       border: 1.5px solid var(--border-color);
       padding: 12px 8px;
-      border-radius: 8px;
+      border-radius: var(--radius-md);
       font-family: inherit;
-      font-weight: 800;
-      font-size: 0.92rem;
+      font-size: 0.88rem;
+      font-weight: 700;
       color: var(--text-main);
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
       text-align: center;
     }
+
+    .tab-btn:hover {
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+
     .tab-btn.active {
       background: var(--primary);
       color: white;
       border-color: var(--primary-dark);
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
     }
 
-    /* Form Card */
+    .tab-btn .tab-sub {
+      font-size: 0.72rem;
+      opacity: 0.82;
+      font-weight: 500;
+    }
+
+    /* Form & Cards */
     .card {
       background: var(--bg-card);
-      border-radius: var(--radius);
+      border-radius: var(--radius-lg);
       padding: 24px;
-      box-shadow: var(--shadow);
+      box-shadow: var(--shadow-md);
       margin-bottom: 20px;
       border: 1px solid var(--border-color);
     }
 
-    .form-section {
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 1.5px solid var(--bg-subtle);
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--primary-dark);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .range-pill {
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      background: var(--primary-light);
+      color: var(--primary-dark);
       border: 1px solid var(--border-color);
-      border-radius: 10px;
+    }
+
+    .section-group {
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
       padding: 16px;
       margin-bottom: 16px;
       background: var(--bg-subtle);
     }
-    .section-label {
+
+    .section-title {
       font-size: 0.85rem;
       font-weight: 800;
       color: var(--primary-dark);
       text-transform: uppercase;
-      margin-bottom: 12px;
       letter-spacing: 0.04em;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
     .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+
     @media (max-width: 640px) {
       .grid-2, .grid-3 { grid-template-columns: 1fr; }
     }
 
-    label { display: block; font-weight: 700; font-size: 0.88rem; margin-bottom: 4px; }
+    label {
+      display: block;
+      font-weight: 700;
+      font-size: 0.85rem;
+      margin-bottom: 5px;
+      color: var(--text-main);
+    }
+
     input[type="text"], input[type="number"], input[type="date"], input[type="time"], select, textarea {
       width: 100%;
       padding: 10px 12px;
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-sm);
       font-family: inherit;
       font-size: 0.92rem;
-      background: white;
+      background: var(--bg-card);
+      color: var(--text-main);
+      transition: border-color 0.2s ease;
     }
 
-    /* Slot Radio Pills */
-    .slot-group { display: flex; gap: 10px; }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    /* Radio Slots */
+    .slot-pill-group { display: flex; gap: 10px; }
     .slot-pill { flex: 1; }
     .slot-pill input { display: none; }
-    .slot-pill label {
-      display: block;
-      text-align: center;
+    .slot-label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       padding: 10px;
       border: 1.5px solid var(--border-color);
-      border-radius: 8px;
-      background: white;
+      border-radius: var(--radius-sm);
+      background: var(--bg-card);
       cursor: pointer;
       font-weight: 700;
+      transition: all 0.2s ease;
     }
-    .slot-pill input:checked + label {
+
+    .slot-pill input:checked + .slot-label {
       border-color: var(--primary);
       background: var(--primary-light);
       color: var(--primary);
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.15);
     }
 
-    /* Time Window Badge */
-    .window-badge {
-      padding: 8px 12px;
-      border-radius: 6px;
-      font-size: 0.82rem;
-      font-weight: 600;
+    .slot-time-range {
+      font-size: 0.72rem;
+      font-weight: 500;
+      opacity: 0.85;
+    }
+
+    /* Status Pills */
+    .status-pill-container {
+      display: flex;
+      gap: 10px;
       margin-top: 10px;
+      flex-wrap: wrap;
     }
-    .window-badge.in { background: var(--success-bg); color: var(--success); border: 1px solid #bbf7d0; }
-    .window-badge.out { background: var(--warning-bg); color: var(--warning); border: 1px solid #fef3c7; }
 
-    /* Temp Badge */
-    .temp-badge { font-size: 0.75rem; font-weight: 700; padding: 2px 6px; border-radius: 4px; margin-top: 4px; display: inline-block; }
-    .temp-badge.ok { background: var(--success-bg); color: var(--success); }
-    .temp-badge.warn { background: var(--danger-bg); color: var(--danger); }
-
-    /* Incident Radios */
-    .incident-radios { display: flex; gap: 20px; align-items: center; margin-top: 6px; }
-    .radio-label { display: flex; align-items: center; gap: 6px; font-weight: 700; cursor: pointer; }
-    .radio-label input { accent-color: var(--primary); width: 18px; height: 18px; }
-
-    .incident-fields {
-      margin-top: 12px;
-      padding-top: 12px;
-      border-top: 1.5px dashed var(--border-color);
+    .info-pill {
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex: 1;
     }
+
+    .info-pill.row-pill {
+      background: #f0f9ff;
+      color: #0369a1;
+      border: 1px solid #bae6fd;
+    }
+
+    .info-pill.in-window {
+      background: var(--success-bg);
+      color: var(--success);
+      border: 1px solid var(--success-border);
+    }
+
+    .info-pill.out-window {
+      background: var(--warning-bg);
+      color: var(--warning);
+      border: 1px solid var(--warning-border);
+    }
+
+    /* Temp Badges */
+    .temp-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: 4px;
+      margin-top: 6px;
+      display: inline-block;
+    }
+
+    .temp-badge.ok { background: var(--success-bg); color: var(--success); border: 1px solid var(--success-border); }
+    .temp-badge.warn { background: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger-border); }
 
     /* Action Buttons */
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+      justify-content: flex-end;
+    }
+
     .btn {
-      padding: 12px 20px;
-      border: none;
-      border-radius: 8px;
+      padding: 12px 24px;
+      border-radius: var(--radius-md);
+      font-family: inherit;
       font-weight: 700;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
-    .btn-primary { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
-    .btn-warning { background: var(--warning); color: white; box-shadow: 0 4px 12px rgba(217, 119, 6, 0.3); }
-    .btn-secondary { background: var(--bg-subtle); color: var(--text-main); border: 1px solid var(--border-color); }
-    .actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px; }
 
-    /* Table */
-    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-    th, td { padding: 10px 12px; border-bottom: 1px solid var(--border-color); text-align: left; }
-    th { background: var(--bg-subtle); font-weight: 700; color: var(--text-muted); }
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    }
 
-    /* Modal */
-    .modal-overlay {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(15, 23, 42, 0.5);
-      display: flex; align-items: center; justify-content: center;
-      z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.2s;
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
     }
-    .modal-overlay.active { opacity: 1; pointer-events: auto; }
-    .modal-box {
-      background: white;
-      padding: 24px;
-      border-radius: var(--radius);
-      width: 90%;
-      max-width: 450px;
-      text-align: center;
-      position: relative;
-    }
-    .close-x-btn {
-      position: absolute;
-      top: 12px;
-      right: 14px;
+
+    .btn-secondary {
       background: var(--bg-subtle);
+      color: var(--text-main);
+      border: 1.5px solid var(--border-color);
+    }
+
+    .btn-secondary:hover {
+      background: var(--border-color);
+    }
+
+    /* Data Table */
+    .table-wrapper {
+      overflow-x: auto;
+      border-radius: var(--radius-md);
       border: 1px solid var(--border-color);
-      border-radius: 50%;
-      width: 32px;
-      height: 32px;
-      font-size: 1.2rem;
-      line-height: 1;
-      cursor: pointer;
-      color: var(--text-muted);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.86rem;
+      text-align: left;
+    }
+
+    th {
+      background: var(--bg-subtle);
+      color: var(--primary-dark);
+      font-weight: 800;
+      padding: 12px 14px;
+      border-bottom: 1.5px solid var(--border-color);
+    }
+
+    td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    tr:nth-child(even) td {
+      background: var(--bg-subtle);
+    }
+
+    /* Modals */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.2s;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+      padding: 16px;
     }
-    .close-x-btn:hover {
-      background: var(--danger-bg);
-      color: var(--danger);
-      border-color: var(--danger);
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
     }
+
+    .modal-box {
+      background: var(--bg-card);
+      padding: 24px;
+      border-radius: var(--radius-lg);
+      max-width: 480px;
+      width: 100%;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border-color);
+      position: relative;
+    }
+
+    .close-x-btn {
+      position: absolute;
+      top: 14px; right: 16px;
+      background: transparent;
+      border: none;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
     .hidden { display: none !important; }
   </style>
 </head>
 <body>
 
-  <header class="header">
-    <button class="admin-lock-btn" onclick="openAdminSettings()">🔒 Admin Config</button>
-    <h1>❄️ REKOD SUHU PETI SEJUK</h1>
-    <p>UNIT FARMASI LOGISTIK PKD SIK</p>
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="header-container">
+      <div>
+        <span class="brand-badge">Sistem Pemantauan Rangkaian Sejuk</span>
+        <h1 class="brand-title">❄️ Rekod Suhu Peti Sejuk</h1>
+        <div class="brand-subtitle">Unit Farmasi Logistik, PKD Sik</div>
+      </div>
+
+      <div class="header-controls">
+        <button class="icon-btn" onclick="exportCSV()" title="Muat Turun Data CSV">
+          📥 Eksport CSV
+        </button>
+        <button class="icon-btn" onclick="openAdminSettings()" title="Tetapan Web App URL & Security">
+          ⚙️ Tetapan Server
+        </button>
+      </div>
+    </div>
   </header>
 
-  <main class="container">
+  <!-- Main Application Wrapper -->
+  <main class="main-wrapper">
 
-    <!-- Tab Selection for 4 Fridges -->
-    <div class="tabs-grid">
-      <button type="button" class="tab-btn active" data-fridge="PETI_SEJUK_1" onclick="selectFridge('PETI_SEJUK_1')">Peti Sejuk 1</button>
-      <button type="button" class="tab-btn" data-fridge="PETI_SEJUK_2" onclick="selectFridge('PETI_SEJUK_2')">Peti Sejuk 2</button>
-      <button type="button" class="tab-btn" data-fridge="PETI_SEJUK_3" onclick="selectFridge('PETI_SEJUK_3')">Peti Sejuk 3</button>
-      <button type="button" class="tab-btn" data-fridge="PETI_SEJUK_4" onclick="selectFridge('PETI_SEJUK_4')">Peti Sejuk 4</button>
-    </div>
+    <!-- Refrigerator Navigation Tabs -->
+    <nav class="location-tabs-card">
+      <button class="tab-btn active" data-fridge="PETI_SEJUK_1" onclick="switchFridge('PETI_SEJUK_1')">
+        <span>🧊 Peti Sejuk 1</span>
+        <span class="tab-sub">Peti Sejuk Utama</span>
+      </button>
+      <button class="tab-btn" data-fridge="PETI_SEJUK_2" onclick="switchFridge('PETI_SEJUK_2')">
+        <span>💉 Peti Sejuk 2</span>
+        <span class="tab-sub">Stok Vaksin / Ubat</span>
+      </button>
+      <button class="tab-btn" data-fridge="PETI_SEJUK_3" onclick="switchFridge('PETI_SEJUK_3')">
+        <span>📦 Peti Sejuk 3</span>
+        <span class="tab-sub">Stok Cadangan</span>
+      </button>
+      <button class="tab-btn" data-fridge="PETI_SEJUK_4" onclick="switchFridge('PETI_SEJUK_4')">
+        <span>❄️ Peti Sejuk 4</span>
+        <span class="tab-sub">Bilik Sejuk</span>
+      </button>
+    </nav>
 
-    <!-- Form Card -->
-    <div class="card">
+    <!-- Main Temperature Logging Form Card -->
+    <section class="card">
+      <div class="card-header">
+        <h2 class="card-title">
+          📝 Borang Rekod Suhu: <span id="activeFridgeTitle">Peti Sejuk 1 (Utama)</span>
+        </h2>
+        <span id="fridgeRangeBadge" class="range-pill">Julat Rasmi: +2.0°C ke +8.0°C</span>
+      </div>
+
       <form id="tempForm">
-        
-        <!-- Fridge Selector Dropdown -->
-        <div class="form-section" style="background:var(--primary-light); border-color:var(--primary);">
-          <div class="section-label" style="color:var(--primary-dark);">📍 PILIH PETI SEJUK</div>
-          <select id="lokasiSelect" name="lokasi" style="font-weight:800; font-size:1.05rem; padding:12px; color:var(--primary-dark);" onchange="selectFridge(this.value)">
-            <option value="PETI_SEJUK_1">Peti Sejuk 1</option>
-            <option value="PETI_SEJUK_2">Peti Sejuk 2</option>
-            <option value="PETI_SEJUK_3">Peti Sejuk 3</option>
-            <option value="PETI_SEJUK_4">Peti Sejuk 4</option>
-          </select>
-        </div>
 
-        <!-- Section 1: Date & Time Slot -->
-        <div class="form-section">
-          <div class="section-label">1. Tarikh & Waktu Log</div>
+        <!-- Section 1: Tarikh & Waktu -->
+        <div class="section-group">
+          <div class="section-title">
+            <span>📅</span> 1. Tarikh & Sesi Log (AM / PM)
+          </div>
           <div class="grid-2">
             <div>
               <label for="dateInput">Tarikh Log</label>
-              <input type="date" id="dateInput" name="date" required>
+              <input type="date" id="dateInput" name="date" required />
             </div>
+
             <div>
               <label>Sesi Waktu Log</label>
-              <div class="slot-group">
+              <div class="slot-pill-group">
                 <div class="slot-pill">
-                  <input type="radio" id="slotAM" name="slot" value="AM" checked onchange="checkTimeWindow()">
-                  <label for="slotAM">AM (7am - 1pm)</label>
+                  <input type="radio" id="slotAM" name="slot" value="AM" checked />
+                  <label for="slotAM" class="slot-label">
+                    <span>AM (Pagi)</span>
+                    <span class="slot-time-range">07:00 - 13:00</span>
+                  </label>
                 </div>
                 <div class="slot-pill">
-                  <input type="radio" id="slotPM" name="slot" value="PM" onchange="checkTimeWindow()">
-                  <label for="slotPM">PM (2pm - 6pm)</label>
+                  <input type="radio" id="slotPM" name="slot" value="PM" />
+                  <label for="slotPM" class="slot-label">
+                    <span>PM (Petang)</span>
+                    <span class="slot-time-range">14:00 - 18:00</span>
+                  </label>
                 </div>
               </div>
             </div>
           </div>
-          <div id="windowBadge" class="window-badge in">Status waktu log.</div>
+
+          <!-- Dynamic Status Badges -->
+          <div class="status-pill-container">
+            <div id="timeWindowPill" class="info-pill in-window">
+              🟢 Dalam Waktu Sesi AM
+            </div>
+            <div id="targetRowPill" class="info-pill row-pill">
+              📊 Target Google Sheets: Baris 2 (AM)
+            </div>
+          </div>
         </div>
 
-        <!-- Section 2: Temperature Readings -->
-        <div class="form-section">
-          <div class="section-label">2. Bacaan Suhu (°C)</div>
+        <!-- Section 2: Bacaan Suhu -->
+        <div class="section-group">
+          <div class="section-title">
+            <span>🌡️</span> 2. Bacaan Suhu (°C)
+          </div>
           <div class="grid-3">
             <div>
-              <label for="min">Suhu Minimum</label>
-              <input type="number" step="0.1" id="min" name="min" required oninput="validateTemp('min')">
-              <span id="minBadge" class="temp-badge hidden"></span>
+              <label for="min">Suhu Minimum (°C)</label>
+              <input type="number" step="0.1" id="min" name="min" placeholder="Contoh: 3.5" required />
+              <div id="minBadge" class="temp-badge hidden"></div>
             </div>
+
             <div>
-              <label for="semasa">Suhu Semasa</label>
-              <input type="number" step="0.1" id="semasa" name="semasa" required oninput="validateTemp('semasa')">
-              <span id="semasaBadge" class="temp-badge hidden"></span>
+              <label for="semasa">Suhu Semasa (°C)</label>
+              <input type="number" step="0.1" id="semasa" name="semasa" placeholder="Contoh: 4.2" required />
+              <div id="semasaBadge" class="temp-badge hidden"></div>
             </div>
+
             <div>
-              <label for="max">Suhu Maksimum</label>
-              <input type="number" step="0.1" id="max" name="max" required oninput="validateTemp('max')">
-              <span id="maxBadge" class="temp-badge hidden"></span>
+              <label for="max">Suhu Maksimum (°C)</label>
+              <input type="number" step="0.1" id="max" name="max" placeholder="Contoh: 5.8" required />
+              <div id="maxBadge" class="temp-badge hidden"></div>
             </div>
           </div>
         </div>
 
-        <!-- Section 3: Perkara Dropdown -->
-        <div class="form-section">
-          <div class="section-label">3. Perkara / Catatan</div>
-          <select id="perkaraSelect" name="perkara">
-            <option value="">-- Pilih Perkara (Jika Ada Problem) --</option>
-            <option value="A">A - TIADA PRODUK/BAHAN RANGKAIAN SEJUK DISIMPAN</option>
-            <option value="B">B - TIDAK CUKUP BEKALAN ELEKTRIK</option>
-            <option value="C">C - PETI SEJUK TIDAK BERFUNGSI DENGAN BETUL</option>
-            <option value="D">D - PEMBANTU TEKNIK DIPANGGIL UNTUK PENAMBAHBAIKAN</option>
-            <option value="E">E - PETI SEJUK DALAM PEMBAIKAN</option>
-          </select>
-        </div>
+        <!-- Section 3: Perkara & Nama Pegawai -->
+        <div class="section-group">
+          <div class="section-title">
+            <span>📋</span> 3. Perkara / Status & Nama Pegawai
+          </div>
+          <div class="grid-2">
+            <div>
+              <label for="perkaraSelect">Pilih Perkara Jika Ada Masalah (Opsional)</label>
+              <select id="perkaraSelect" name="perkara">
+                <option value="">-- Normal / Tiada Isu --</option>
+                <option value="A">A - TIADA PRODUK/BAHAN RANGKAIAN SEJUK DISIMPAN</option>
+                <option value="B">B - TIDAK CUKUP BEKALAN ELEKTRIK</option>
+                <option value="C">C - PETI SEJUK TIDAK BERFUNGSI DENGAN BETUL</option>
+                <option value="D">D - PEMBANTU TEKNIK DIPANGGIL UNTUK PENAMBAHBAIKAN</option>
+                <option value="E">E - PETI SEJUK DALAM PEMBAIKAN</option>
+              </select>
+            </div>
 
-        <!-- Section 4: Signature / Recorder Name -->
-        <div class="form-section">
-          <div class="section-label">4. Tandatangan Pencatat</div>
-          <div>
-            <label for="nama">Nama Ringkas Pencatat</label>
-            <input type="text" id="nama" name="nama" placeholder="Contoh: John Wick" required>
+            <div>
+              <label for="namaInput">Nama Pegawai / Pencatat</label>
+              <input type="text" id="namaInput" name="nama" placeholder="Contoh: Pegawai Farmasi Logistik" required />
+            </div>
           </div>
         </div>
 
-        <!-- Section 5: Catatan Suhu Luar Julat (Optional) -->
-        <div class="form-section">
-          <div class="section-label">5. Catatan Suhu Luar Julat (Optional)</div>
-          <label>Suhu Luar Julat? Isi Catatan Suhu Luar Julat</label>
-          <div class="incident-radios">
-            <label class="radio-label">
-              <input type="radio" name="incidentToggle" id="incidentNo" value="NO" checked onchange="toggleIncident(false)"> Tidak
+        <!-- Section 4: Incident Log (CATATAN SUHU LUAR JULAT) -->
+        <div class="section-group">
+          <div class="section-title">
+            <span>🚨</span> 4. Catatan Suhu Luar Julat (Opsional)
+          </div>
+
+          <div style="display:flex; gap:20px; align-items:center;">
+            <label style="margin:0;">Aktifkan Incident Log?</label>
+            <label style="cursor:pointer; font-weight:normal;">
+              <input type="radio" id="incidentNo" name="incidentEnable" value="no" checked onclick="toggleIncidentForm(false)"> Tidak
             </label>
-            <label class="radio-label">
-              <input type="radio" name="incidentToggle" id="incidentYes" value="YES" onchange="toggleIncident(true)"> Ya
+            <label style="cursor:pointer; font-weight:normal;">
+              <input type="radio" id="incidentYes" name="incidentEnable" value="yes" onclick="toggleIncidentForm(true)"> Ya
             </label>
           </div>
 
-          <div id="incidentBox" class="incident-fields hidden">
+          <div id="incidentFieldsBox" class="hidden" style="margin-top:14px; padding-top:14px; border-top:1.5px dashed var(--border-color);">
             <div class="grid-2" style="margin-bottom:12px;">
               <div>
-                <label for="incidentDate">Tarikh</label>
-                <input type="date" id="incidentDate">
+                <label for="incidentDate">Tarikh Kejadian</label>
+                <input type="date" id="incidentDate" />
               </div>
               <div>
-                <label for="incidentTime">Masa</label>
-                <input type="time" id="incidentTime">
+                <label for="incidentTime">Masa Kejadian</label>
+                <input type="time" id="incidentTime" />
               </div>
             </div>
 
             <div style="margin-bottom:12px;">
-              <label for="incidentOfficer">Nama Pegawai</label>
-              <input type="text" id="incidentOfficer" placeholder="Nama Pegawai (cth: Nur Hafiza binti Maakib)">
+              <label for="incidentOfficer">Nama Pegawai Bertanggungjawab</label>
+              <input type="text" id="incidentOfficer" placeholder="Nama Pegawai Penjelas" />
             </div>
 
             <div>
-              <label for="incidentNote">Perkara/Penjelasan</label>
-              <textarea id="incidentNote" rows="3" placeholder="Terangkan apa berlaku & tindakan diambil..."></textarea>
-            </div>
-            <div style="font-size:0.78rem; color:var(--text-muted); margin-top:6px;">
-              Jika bacaan di luar julat, anda boleh tambah catatan (tidak wajib).
+              <label for="incidentNote">Penjelasan / Tindakan Pembetulan Taken</label>
+              <textarea id="incidentNote" rows="3" placeholder="Sila nyatakan tindakan susulan (contoh: pemindahan stok ubat, pengesahan juruteknik)..."></textarea>
             </div>
           </div>
         </div>
 
-        <!-- Submit Actions -->
-        <div class="actions">
-          <button type="button" class="btn btn-secondary" onclick="resetForm()">Reset</button>
-          <button type="submit" class="btn btn-primary" id="submitBtn" style="width:auto;">🚀 Hantar Rekod Suhu</button>
-        </div>
-
-        <div style="text-align:center; font-size:0.8rem; color:var(--text-muted); margin-top:12px;">
-          Setiap hari mempunyai 2 slot: AM & PM.
+        <!-- Submit Buttons -->
+        <div class="btn-group">
+          <button type="button" class="btn btn-secondary" onclick="resetForm()">Semula</button>
+          <button type="submit" class="btn btn-primary" id="submitBtn">🚀 Hantar Rekod Suhu</button>
         </div>
 
       </form>
-    </div>
+    </section>
 
-    <!-- Live Log Preview -->
-    <div class="card">
-      <h3 style="margin-bottom:12px; font-size:1.05rem;">📋 Rekod Terbaru (<span id="tableFridgeTitle">Peti Sejuk 1</span>)</h3>
-      <div style="overflow-x:auto;">
+    <!-- Temperature Analytics Chart Card -->
+    <section class="card">
+      <div class="card-header">
+        <h3 class="card-title">📈 Trend Bacaan Suhu Peti Sejuk</h3>
+      </div>
+      <div style="height: 280px; position: relative;">
+        <canvas id="tempChart"></canvas>
+      </div>
+    </section>
+
+    <!-- Recent Logs Table Card -->
+    <section class="card">
+      <div class="card-header">
+        <h3 class="card-title">📋 Rekod Suhu Terbaru</h3>
+        <button class="btn btn-secondary" onclick="exportCSV()" style="padding:6px 12px; font-size:0.8rem;">📥 Download CSV</button>
+      </div>
+      <div class="table-wrapper">
         <table>
           <thead>
             <tr>
               <th>Tarikh</th>
-              <th>Waktu</th>
+              <th>Slot</th>
               <th>Min</th>
               <th>Semasa</th>
               <th>Max</th>
               <th>Perkara</th>
-              <th>Pencatat</th>
+              <th>Pegawai</th>
+              <th>Status Sync</th>
             </tr>
           </thead>
-          <tbody id="logTable">
-            <tr><td colspan="7" style="text-align:center; color:var(--text-muted);">Tiada rekod disimpan lagi.</td></tr>
+          <tbody id="logTableBody">
+            <tr><td colspan="8" style="text-align:center; color:var(--text-muted); padding:20px;">Memuatkan data...</td></tr>
           </tbody>
         </table>
       </div>
-    </div>
+    </section>
 
   </main>
 
-  <!-- Overwrite Confirmation Warning Modal -->
-  <div id="overwriteModal" class="modal-overlay">
-    <div class="modal-box">
-      <button type="button" class="close-x-btn" onclick="closeOverwriteModal()">&times;</button>
-      <div style="font-size:2.5rem; margin-bottom:8px;">⚠️</div>
-      <h3 style="color:var(--warning); margin-bottom:8px; font-weight:800;">Rekod Slot Telah Diisi!</h3>
-      <p id="overwriteMsg" style="font-size:0.9rem; color:var(--text-muted); margin-bottom:20px;">
-        Suhu telah dicatatkan pada tarikh dan slot (AM/PM) ini. Adakah anda pasti mahu overwrite (gantikan) data ini?
-      </p>
-      <div style="display:flex; gap:12px; justify-content:center;">
-        <button class="btn btn-secondary" onclick="closeOverwriteModal()">Batal</button>
-        <button class="btn btn-warning" id="confirmOverwriteBtn">Gantikan Data (Overwrite)</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Protected Admin Password / Settings Modal -->
+  <!-- Admin & Web App URL Settings Modal -->
   <div id="settingsModal" class="modal-overlay">
-    <div class="modal-box" style="text-align:left;">
+    <div class="modal-box">
       <button type="button" class="close-x-btn" onclick="closeSettings()" title="Tutup">&times;</button>
-
-      <h3 style="margin-bottom:8px;">🔒 Tetapan Admin Server</h3>
+      <h3 style="color:var(--primary-dark); margin-bottom:8px;">⚙️ Tetapan Server & Security</h3>
       <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:14px;">
-        Hanya Admin boleh mengemas kini Web App URL ini.
+        Masukkan PIN Admin untuk mengemas kini Google Apps Script Web App URL.
       </p>
-      
-      <div id="pinBox" style="margin-bottom:12px;">
-        <label for="adminPin">Masukkan PIN Admin</label>
-        <input type="password" id="adminPin" placeholder="Masukkan PIN Admin">
-        <div style="display:flex; gap:10px; margin-top:10px;">
-          <button type="button" class="btn btn-secondary" style="flex:1;" onclick="closeSettings()">Tutup</button>
-          <button type="button" class="btn btn-primary" style="flex:1;" onclick="unlockAdmin()">Unlock Tetapan</button>
+
+      <div id="pinBox">
+        <label for="adminPin">PIN Security Admin</label>
+        <input type="password" id="adminPin" placeholder="Masukkan PIN Rahsia Admin" style="margin-bottom:12px;" />
+        <div class="btn-group">
+          <button type="button" class="btn btn-secondary" onclick="closeSettings()">Batal</button>
+          <button type="button" class="btn btn-primary" onclick="unlockAdmin()">Buka Tetapan</button>
         </div>
       </div>
 
       <div id="urlBox" class="hidden">
         <label for="webAppUrl">Google Apps Script Web App URL</label>
-        <input type="url" id="webAppUrl" placeholder="https://script.google.com/macros/s/.../exec">
-        <div class="actions" style="margin-top:16px;">
+        <input type="url" id="webAppUrl" placeholder="https://script.google.com/macros/s/.../exec" style="margin-bottom:14px;" />
+        <div class="btn-group">
           <button type="button" class="btn btn-secondary" onclick="closeSettings()">Batal</button>
-          <button type="button" class="btn btn-primary" style="width:auto;" onclick="saveSettings()">Simpan URL</button>
+          <button type="button" class="btn btn-primary" onclick="saveSettings()">Simpan URL</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Success Modal -->
-  <div id="successModal" class="modal-overlay">
+  <!-- Overwrite Confirmation Modal -->
+  <div id="overwriteModal" class="modal-overlay">
     <div class="modal-box">
-      <h2 style="color:var(--success);">✅ Berjaya Dihantar!</h2>
-      <p style="margin-top:8px;" id="successText">Rekod suhu telah berjaya disimpan.</p>
+      <h3 style="color:var(--warning); margin-bottom:8px;">⚠️ Rekod Sudah Wujud!</h3>
+      <p id="overwriteDataText" style="font-size:0.9rem; color:var(--text-main); margin-bottom:16px;">
+        Data untuk tarikh ini telah ada di Google Sheet. Adakah anda ingin mengemas kini (overwrite)?
+      </p>
+      <div class="btn-group">
+        <button type="button" class="btn btn-secondary" onclick="closeOverwriteModal()">Batal</button>
+        <button type="button" class="btn btn-primary" id="confirmOverwriteBtn">Ya, Overwrite</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Notification Modal -->
+  <div id="successModal" class="modal-overlay">
+    <div class="modal-box" style="text-align:center;">
+      <h2 style="color:var(--success); margin-bottom:8px;">✅ Berjaya!</h2>
+      <p id="successText" style="font-size:0.9rem; color:var(--text-main);">Rekod suhu telah berjaya disimpan.</p>
     </div>
   </div>
 
   <script>
-    // HARDCODED WEB APP URL & SECRET ADMIN PIN
-    let HARDCODED_URL = 'https://script.google.com/macros/s/AKfycbw7Ltd8m5X_pxqjudaR5UJ1GeKyXwu5pcaqSeTcwzmeXXo7MCcWIVaS1_4ZkyNVj2LQ5Q/exec'; 
-    let ADMIN_PIN = '2104';
-
-    let currentFridge = 'PETI_SEJUK_1';
-    let webAppUrl = HARDCODED_URL;
-    let logs = JSON.parse(localStorage.getItem('fridge_logs') || '[]');
-    let pendingPayload = null;
-
-    const FRIDGE_NAMES = {
-      'PETI_SEJUK_1': 'Peti Sejuk 1',
-      'PETI_SEJUK_2': 'Peti Sejuk 2',
-      'PETI_SEJUK_3': 'Peti Sejuk 3',
-      'PETI_SEJUK_4': 'Peti Sejuk 4'
+    const CONFIG = {
+      unit: 'FARMASI LOGISTIK PKD SIK',
+      defaultUrl: 'https://script.google.com/macros/s/AKfycbw7Ltd8m5X_pxqjudaR5UJ1GeKyXwu5pcaqSeTcwzmeXXo7MCcWIVaS1_4ZkyNVj2LQ5Q/exec',
+      adminPin: '2104',
+      fridges: {
+        'PETI_SEJUK_1': { name: 'Peti Sejuk 1 (Utama)', min: 2.0, max: 8.0 },
+        'PETI_SEJUK_2': { name: 'Peti Sejuk 2 (Stok Vaksin / Ubat)', min: 2.0, max: 8.0 },
+        'PETI_SEJUK_3': { name: 'Peti Sejuk 3 (Stok Cadangan)', min: 2.0, max: 8.0 },
+        'PETI_SEJUK_4': { name: 'Peti Sejuk 4 (Bilik Sejuk)', min: 2.0, max: 8.0 }
+      }
     };
 
+    let currentFridge = 'PETI_SEJUK_1';
+    let logs = JSON.parse(localStorage.getItem('farmasi_logistik_temp_logs') || '[]');
+    let webAppUrl = localStorage.getItem('farmasi_logistik_web_app_url') || CONFIG.defaultUrl;
+    let tempChart = null;
+
     document.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('webAppUrl').value = webAppUrl;
-      initForm();
-      selectFridge('PETI_SEJUK_1');
-      renderLogs();
+      initApp();
     });
 
-    function selectFridge(fridgeKey) {
+    function initApp() {
+      document.getElementById('webAppUrl').value = webAppUrl;
+
+      const now = new Date();
+      const isoDate = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+      const timeStr = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+
+      document.getElementById('dateInput').value = isoDate;
+      document.getElementById('incidentDate').value = isoDate;
+      document.getElementById('incidentTime').value = timeStr;
+
+      const hour = now.getHours();
+      const autoSlot = hour >= 14 ? 'PM' : 'AM';
+      const slotRadio = document.querySelector(`input[name="slot"][value="${autoSlot}"]`);
+      if (slotRadio) slotRadio.checked = true;
+
+      document.getElementById('dateInput').addEventListener('change', updateCalculatedRow);
+      document.querySelectorAll('input[name="slot"]').forEach(r => {
+        r.addEventListener('change', () => {
+          updateCalculatedRow();
+          checkTimeWindow();
+        });
+      });
+
+      ['min', 'semasa', 'max'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('input', () => validateTemperatureInput(id));
+      });
+
+      switchFridge('PETI_SEJUK_1');
+      updateCalculatedRow();
+      checkTimeWindow();
+      renderLogs();
+      initChart();
+    }
+
+    function switchFridge(fridgeKey) {
       currentFridge = fridgeKey;
-      document.getElementById('lokasiSelect').value = fridgeKey;
 
       document.querySelectorAll('.tab-btn').forEach(btn => {
         if (btn.getAttribute('data-fridge') === fridgeKey) {
@@ -529,85 +842,105 @@
         }
       });
 
-      const name = FRIDGE_NAMES[fridgeKey] || fridgeKey;
-      document.getElementById('tableFridgeTitle').textContent = name;
+      const fridgeInfo = CONFIG.fridges[fridgeKey] || { name: fridgeKey, min: 2, max: 8 };
+      document.getElementById('activeFridgeTitle').textContent = fridgeInfo.name;
+      document.getElementById('fridgeRangeBadge').textContent = `Julat Rasmi: +${fridgeInfo.min.toFixed(1)}°C ke +${fridgeInfo.max.toFixed(1)}°C`;
+
+      ['min', 'semasa', 'max'].forEach(id => validateTemperatureInput(id));
 
       renderLogs();
+      updateChart();
     }
 
-    function initForm() {
-      const d = new Date();
-      const iso = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-      const timeStr = `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+    function updateCalculatedRow() {
+      const dateStr = document.getElementById('dateInput').value;
+      const slotEl = document.querySelector('input[name="slot"]:checked');
+      const slot = slotEl ? slotEl.value : 'AM';
+      const rowBadge = document.getElementById('targetRowPill');
 
-      document.getElementById('dateInput').value = iso;
-      document.getElementById('incidentDate').value = iso;
-      document.getElementById('incidentTime').value = timeStr;
+      if (!dateStr) {
+        rowBadge.innerHTML = '📊 Baris Google Sheets: -';
+        return;
+      }
 
-      const hour = d.getHours();
-      const slot = hour >= 14 ? 'PM' : 'AM';
-      document.querySelector(`input[name="slot"][value="${slot}"]`).checked = true;
-      checkTimeWindow();
+      const targetRow = calculateTargetRow(dateStr, slot);
+      if (targetRow > 0) {
+        rowBadge.innerHTML = `📊 Target Google Sheets: <b>Baris ${targetRow}</b> (${slot})`;
+      } else {
+        rowBadge.innerHTML = `⚠️ Tarikh Luar Julat (2025 - 2036)`;
+      }
+    }
+
+    function calculateTargetRow(isoDate, slot) {
+      const d = new Date(isoDate);
+      if (isNaN(d.getTime())) return -1;
+      const year = d.getFullYear();
+      if (year < 2025 || year > 2036) return -1;
+
+      d.setHours(0,0,0,0);
+      const base = new Date(2025, 0, 1);
+      const days = Math.floor((d.getTime() - base.getTime()) / (1000 * 60 * 60 * 24));
+      const offset = (String(slot).toUpperCase() === 'PM') ? 1 : 0;
+      return 2 + (days * 2) + offset;
     }
 
     function checkTimeWindow() {
       const hour = new Date().getHours();
-      const slot = document.querySelector('input[name="slot"]:checked').value;
-      const badge = document.getElementById('windowBadge');
+      const slotEl = document.querySelector('input[name="slot"]:checked');
+      const slot = slotEl ? slotEl.value : 'AM';
+      const windowPill = document.getElementById('timeWindowPill');
 
       if (slot === 'AM') {
         if (hour >= 7 && hour < 13) {
-          badge.className = 'window-badge in';
-          badge.innerHTML = '🟢 Dalam Sesi Waktu AM Rasmi (7:00 AM - 1:00 PM)';
+          windowPill.className = 'info-pill in-window';
+          windowPill.innerHTML = '🟢 Dalam Sesi AM Rasmi (07:00 AM - 01:00 PM)';
         } else {
-          badge.className = 'window-badge out';
-          badge.innerHTML = '⚠️ Luar Masa AM Rasmi (7:00 AM - 1:00 PM)';
+          windowPill.className = 'info-pill out-window';
+          windowPill.innerHTML = '⚠️ Luar Waktu AM Rasmi (07:00 AM - 01:00 PM)';
         }
       } else {
         if (hour >= 14 && hour <= 18) {
-          badge.className = 'window-badge in';
-          badge.innerHTML = '🟢 Dalam Sesi Waktu PM Rasmi (2:00 PM - 6:00 PM)';
+          windowPill.className = 'info-pill in-window';
+          windowPill.innerHTML = '🟢 Dalam Sesi PM Rasmi (02:00 PM - 06:00 PM)';
         } else {
-          badge.className = 'window-badge out';
-          badge.innerHTML = '⚠️ Luar Masa PM Rasmi (2:00 PM - 6:00 PM)';
+          windowPill.className = 'info-pill out-window';
+          windowPill.innerHTML = '⚠️ Luar Waktu PM Rasmi (02:00 PM - 06:00 PM)';
         }
       }
     }
 
-    function validateTemp(id) {
+    function validateTemperatureInput(id) {
       const val = parseFloat(document.getElementById(id).value);
       const badge = document.getElementById(id + 'Badge');
-      if (isNaN(val)) { badge.className = 'temp-badge hidden'; return; }
+      if (!badge) return;
 
-      if (val >= 2.0 && val <= 8.0) {
+      if (isNaN(val)) {
+        badge.className = 'temp-badge hidden';
+        return;
+      }
+
+      const cfg = CONFIG.fridges[currentFridge] || { min: 2, max: 8 };
+
+      if (val >= cfg.min && val <= cfg.max) {
         badge.className = 'temp-badge ok';
-        badge.textContent = '✅ Selamat (+2.0 ke +8.0 °C)';
+        badge.textContent = `✅ Selamat (${val}°C)`;
       } else {
         badge.className = 'temp-badge warn';
-        badge.textContent = '⚠️ Luar Normal (+2.0 ke +8.0 °C)';
+        badge.textContent = `🚨 Luar Julat Selamat (+${cfg.min}°C ke +${cfg.max}°C)!`;
         document.getElementById('incidentYes').checked = true;
-        toggleIncident(true);
+        toggleIncidentForm(true);
       }
     }
 
-    function toggleIncident(show) {
-      document.getElementById('incidentBox').classList.toggle('hidden', !show);
+    function toggleIncidentForm(show) {
+      const box = document.getElementById('incidentFieldsBox');
+      if (box) box.classList.toggle('hidden', !show);
     }
 
-    function resetForm() {
-      document.getElementById('tempForm').reset();
-      document.getElementById('incidentNo').checked = true;
-      toggleIncident(false);
-      initForm();
-      ['minBadge', 'semasaBadge', 'maxBadge'].forEach(id => {
-        document.getElementById(id).className = 'temp-badge hidden';
-      });
-    }
-
-    // Main Submit Handler
     document.getElementById('tempForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const fd = new FormData(e.target);
+      const submitBtn = document.getElementById('submitBtn');
 
       const payload = {
         lokasi: currentFridge,
@@ -617,8 +950,7 @@
         semasa: fd.get('semasa'),
         max: fd.get('max'),
         perkara: fd.get('perkara'),
-        nama: fd.get('nama'),
-        overwrite: false
+        nama: fd.get('nama')
       };
 
       if (document.getElementById('incidentYes').checked) {
@@ -631,90 +963,97 @@
         };
       }
 
-      // Check if slot already exists in local logs
-      const existing = logs.find(
-        l => l.lokasi === payload.lokasi && l.date === payload.date && l.slot === payload.slot
-      );
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Menghantar...';
 
-      if (existing && !payload.overwrite) {
-        pendingPayload = payload;
-        const fridgeLabel = FRIDGE_NAMES[payload.lokasi] || payload.lokasi;
-        document.getElementById('overwriteMsg').textContent = 
-          `Data suhu telah pun diisi untuk slot (${payload.slot}) pada tarikh (${payload.date}) bagi ${fridgeLabel}. Adakah anda pasti mahu overwrite (gantikan) data ini?`;
-        document.getElementById('overwriteModal').classList.add('active');
-        return;
+      let success = false;
+      let responseData = null;
+
+      if (webAppUrl) {
+        try {
+          const res = await fetch(webAppUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify(payload)
+          });
+          responseData = await res.json();
+          if (responseData.ok) {
+            success = true;
+          } else if (responseData.already && !payload.overwrite) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = '🚀 Hantar Rekod Suhu';
+            showOverwriteModal(payload, responseData.row);
+            return;
+          }
+        } catch (err) {
+          console.warn('Network / Web App error, saving locally:', err);
+        }
       }
 
-      await sendDataToSheet(payload);
+      logs.unshift({
+        ...payload,
+        id: Date.now(),
+        timestamp: new Date().toISOString(),
+        synced: success
+      });
+      localStorage.setItem('farmasi_logistik_temp_logs', JSON.stringify(logs));
+
+      submitBtn.disabled = false;
+      submitBtn.textContent = '🚀 Hantar Rekod Suhu';
+
+      showSuccessModal(success);
+      resetForm();
+      renderLogs();
+      updateChart();
     });
 
-    // Confirm Overwrite Button Handler
-    document.getElementById('confirmOverwriteBtn').addEventListener('click', async () => {
-      closeOverwriteModal();
-      if (pendingPayload) {
-        pendingPayload.overwrite = true;
-        await sendDataToSheet(pendingPayload);
-        pendingPayload = null;
-      }
-    });
+    function showOverwriteModal(payload, row) {
+      const modal = document.getElementById('overwriteModal');
+      const fridgeName = (CONFIG.fridges[payload.lokasi] || {}).name || payload.lokasi;
+      document.getElementById('overwriteDataText').textContent = 
+        `Rekod bagi ${fridgeName} pada ${payload.date} (${payload.slot}) sudah wujud pada Baris ${row}. Adakah anda pasti untuk mengemas kini (overwrite)?`;
+      modal.classList.add('active');
+
+      document.getElementById('confirmOverwriteBtn').onclick = () => {
+        modal.classList.remove('active');
+        payload.overwrite = true;
+        document.getElementById('tempForm').dispatchEvent(new Event('submit'));
+      };
+    }
 
     function closeOverwriteModal() {
       document.getElementById('overwriteModal').classList.remove('active');
     }
 
-    async function sendDataToSheet(payload) {
-      const btn = document.getElementById('submitBtn');
-      btn.disabled = true;
-      btn.textContent = 'Menghantar...';
-
-      let success = false;
-
-      if (webAppUrl) {
-        try {
-          await fetch(webAppUrl, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify(payload)
-          });
-          success = true;
-        } catch (err) {
-          console.warn('Network error, saving locally:', err);
-          success = false;
-        }
-      }
-
-      // Remove previous duplicate if overwriting
-      logs = logs.filter(l => !(l.lokasi === payload.lokasi && l.date === payload.date && l.slot === payload.slot));
-      logs.unshift({ ...payload, synced: success });
-      localStorage.setItem('fridge_logs', JSON.stringify(logs));
-
-      btn.disabled = false;
-      btn.textContent = '🚀 Hantar Rekod Suhu';
-
-      showSuccess(success);
-      resetForm();
-      renderLogs();
-    }
-
     function renderLogs() {
-      const tbody = document.getElementById('logTable');
+      const tbody = document.getElementById('logTableBody');
       const filtered = logs.filter(l => l.lokasi === currentFridge);
+
       if (filtered.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:var(--text-muted);">Tiada rekod disimpan lagi.</td></tr>';
+        const fridgeName = (CONFIG.fridges[currentFridge] || {}).name || currentFridge;
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:var(--text-muted); padding:20px;">Tiada rekod disimpan untuk ${fridgeName} lagi.</td></tr>`;
         return;
       }
-      tbody.innerHTML = filtered.slice(0, 10).map(r => `
+
+      tbody.innerHTML = filtered.slice(0, 15).map(r => `
         <tr>
           <td><b>${r.date}</b></td>
-          <td>${r.slot}</td>
-          <td>${r.min} °C</td>
-          <td><b>${r.semasa} °C</b></td>
-          <td>${r.max} °C</td>
+          <td><span class="range-pill">${r.slot}</span></td>
+          <td>${r.min !== '' ? r.min + ' °C' : '-'}</td>
+          <td><b>${r.semasa !== '' ? r.semasa + ' °C' : '-'}</b></td>
+          <td>${r.max !== '' ? r.max + ' °C' : '-'}</td>
           <td>${r.perkara || '-'}</td>
-          <td>${r.nama} ${r.synced ? '✅' : '💾'}</td>
+          <td>${r.nama || '-'}</td>
+          <td>${r.synced ? '<span style="color:var(--success);">✅ Synced</span>' : '<span style="color:var(--warning);">💾 Offline</span>'}</td>
         </tr>
       `).join('');
+    }
+
+    function resetForm() {
+      document.getElementById('tempForm').reset();
+      document.getElementById('incidentNo').checked = true;
+      toggleIncidentForm(false);
+      initApp();
     }
 
     function openAdminSettings() {
@@ -726,7 +1065,7 @@
 
     function unlockAdmin() {
       const pin = document.getElementById('adminPin').value;
-      if (pin === ADMIN_PIN) {
+      if (pin === CONFIG.adminPin) {
         document.getElementById('pinBox').classList.add('hidden');
         document.getElementById('urlBox').classList.remove('hidden');
       } else {
@@ -734,22 +1073,97 @@
       }
     }
 
-    function closeSettings() { document.getElementById('settingsModal').classList.remove('active'); }
+    function closeSettings() {
+      document.getElementById('settingsModal').classList.remove('active');
+    }
 
     function saveSettings() {
       webAppUrl = document.getElementById('webAppUrl').value.trim();
-      localStorage.setItem('fridge_url', webAppUrl);
+      localStorage.setItem('farmasi_logistik_web_app_url', webAppUrl);
       closeSettings();
-      alert('URL Web App Berjaya Dikunci & Disimpan!');
+      alert('Google Apps Script URL Berjaya Disimpan!');
     }
 
-    function showSuccess(isSynced) {
+    function showSuccessModal(isSynced) {
       const modal = document.getElementById('successModal');
-      document.getElementById('successText').textContent = isSynced 
-        ? 'Rekod berjaya dihantar ke Google Spreadsheet!' 
-        : 'Rekod telah disimpan secara lokal (Offline).';
+      document.getElementById('successText').textContent = isSynced
+        ? 'Rekod suhu telah berjaya disinkronkan ke Google Spreadsheet (Farmasi Logistik)!'
+        : 'Rekod telah disimpan secara tempatan (Local Storage).';
       modal.classList.add('active');
-      setTimeout(() => modal.classList.remove('active'), 2000);
+      setTimeout(() => modal.classList.remove('active'), 2200);
+    }
+
+    function exportCSV() {
+      if (logs.length === 0) {
+        alert('Tiada data untuk dieksport.');
+        return;
+      }
+
+      const headers = ['Peti Sejuk', 'Tarikh', 'Slot', 'Suhu Min (°C)', 'Suhu Semasa (°C)', 'Suhu Max (°C)', 'Perkara', 'Pencatat', 'Synced'];
+      const rows = logs.map(l => [
+        (CONFIG.fridges[l.lokasi] || {}).name || l.lokasi,
+        l.date,
+        l.slot,
+        l.min,
+        l.semasa,
+        l.max,
+        `"${(l.perkara || '').replace(/"/g, '""')}"`,
+        `"${(l.nama || '').replace(/"/g, '""')}"`,
+        l.synced ? 'YA' : 'TIDAK'
+      ]);
+
+      const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement('a');
+      link.setAttribute('href', encodedUri);
+      link.setAttribute('download', `Rekod_Suhu_Farmasi_Logistik_${new Date().toISOString().slice(0,10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    function initChart() {
+      const ctx = document.getElementById('tempChart');
+      if (!ctx) return;
+
+      tempChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: [],
+          datasets: [
+            { label: 'Suhu Min (°C)', borderColor: '#0284c7', backgroundColor: 'rgba(2, 132, 199, 0.1)', data: [], fill: false, tension: 0.3 },
+            { label: 'Suhu Semasa (°C)', borderColor: '#2563eb', backgroundColor: 'rgba(37, 99, 235, 0.2)', data: [], fill: true, tension: 0.3 },
+            { label: 'Suhu Max (°C)', borderColor: '#dc2626', backgroundColor: 'rgba(220, 38, 38, 0.1)', data: [], fill: false, tension: 0.3 }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: 'top' },
+            title: { display: true, text: 'Trend Bacaan Suhu' }
+          },
+          scales: {
+            y: { title: { display: true, text: 'Suhu (°C)' } }
+          }
+        }
+      });
+
+      updateChart();
+    }
+
+    function updateChart() {
+      if (!tempChart) return;
+      const filtered = logs.filter(l => l.lokasi === currentFridge).slice(0, 10).reverse();
+
+      tempChart.data.labels = filtered.map(f => `${f.date} (${f.slot})`);
+      tempChart.data.datasets[0].data = filtered.map(f => parseFloat(f.min) || null);
+      tempChart.data.datasets[1].data = filtered.map(f => parseFloat(f.semasa) || null);
+      tempChart.data.datasets[2].data = filtered.map(f => parseFloat(f.max) || null);
+
+      const fridgeName = (CONFIG.fridges[currentFridge] || {}).name || currentFridge;
+      tempChart.options.plugins.title.text = `Trend Bacaan Suhu — ${fridgeName}`;
+      tempChart.update();
     }
   </script>
 </body>

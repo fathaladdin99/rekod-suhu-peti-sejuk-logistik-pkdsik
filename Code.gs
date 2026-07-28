@@ -1,9 +1,7 @@
 /**
- * REKOD SUHU PETI SEJUK (FARMASI LOGISTIK) - WEB APP & WEBHOOK API BACKEND
- * Unlimited Years Support (2025 to 2100+)
+ * REKOD SUHU PETI SEJUK (FARMASI LOGISTIK PKD SIK) — BACKEND SCRIPT
  */
 
-/* === SPREADSHEET IDs (Gantikan dengan ID Google Spreadsheet anda) === */
 const SPREADSHEET_IDS = {
   'PETI_SEJUK_1': '1R55c5d_jQ4VSG2S5ATnIMYnCMwpxONs8gC2-ewncaPA',
   'PETI_SEJUK_2': '1t5ZB1rAceHNrK8C49gsAz3P--U2A1YrMsya8cqgY40c',
@@ -11,30 +9,22 @@ const SPREADSHEET_IDS = {
   'PETI_SEJUK_4': '1PmS1iB_5v4gl7rNb910UqH9XDfnO4WhI8su5WD-medE'
 };
 
-/* === Sheet Names === */
 const SHEET_TAB_REKOD   = 'REKOD SUHU';
 const SHEET_TAB_CATATAN = 'CATATAN SUHU LUAR JULAT';
 
-/* === Bounds & Constraints === */
 const BASE_YEAR = 2025;
-const LAST_YEAR = 2100; // Support forever (up to 2100+)
-const START_ROW = 2; // Row 1 is header (Tarikh, Waktu, Suhu Min, Suhu Semasa, Suhu Max, Perkara, Tandatangan)
+const LAST_YEAR = 2036;
+const START_ROW = 2;
 
-/**
- * 1. Web App GET Handler
- */
 function doGet(e) {
   if (e && e.parameter && e.parameter.action === 'config') {
     return createJsonResponse(getConfig());
   }
-  return HtmlService.createHtmlOutputFromFile('form')
-    .setTitle('Rekod Suhu Peti Sejuk Farmasi')
+  return HtmlService.createHtmlOutputFromFile('index')
+    .setTitle('Rekod Suhu Peti Sejuk Farmasi Logistik')
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
 
-/**
- * 2. Web App POST Handler (Web API Endpoint for Standalone Web App)
- */
 function doPost(e) {
   try {
     let payload = {};
@@ -46,10 +36,6 @@ function doPost(e) {
       }
     } else if (e && e.parameter) {
       payload = e.parameter;
-    }
-
-    if (typeof payload.incident === 'string') {
-      try { payload.incident = JSON.parse(payload.incident); } catch(err) {}
     }
 
     if (payload.action === 'check') {
@@ -103,13 +89,9 @@ function getConfig() {
 function handleSubmit(payload) {
   if (!payload || !payload.lokasi) throw new Error('Sila pilih lokasi peti sejuk.');
 
-  const ssId = idForLokasi_(payload.lokasi);
-  const ss = SpreadsheetApp.openById(ssId);
-  
-  let rekod = ss.getSheetByName(SHEET_TAB_REKOD);
-  if (!rekod) {
-    rekod = initRekodSheet_(ss);
-  }
+  const ss = SpreadsheetApp.openById(idForLokasi_(payload.lokasi));
+  const rekod = ss.getSheetByName(SHEET_TAB_REKOD);
+  if (!rekod) throw new Error(`Tab "${SHEET_TAB_REKOD}" tidak ditemui.`);
 
   const targetRow = rowFor_(payload.date, payload.slot);
 
@@ -120,11 +102,8 @@ function handleSubmit(payload) {
     return { ok: false, already: true, row: targetRow };
   }
 
-  const dateObj = new Date(payload.date);
-  const dateFormatted = formatDateDDMMYYYY_(dateObj);
-
   const values = [[
-    dateFormatted,
+    new Date(payload.date),
     String(payload.slot).toUpperCase(),
     payload.min === '' ? '' : Number(payload.min),
     payload.semasa === '' ? '' : Number(payload.semasa),
@@ -132,11 +111,10 @@ function handleSubmit(payload) {
     fullPerkaraFromLetter_(payload.perkara || ''),
     payload.nama ? String(payload.nama).trim() : ''
   ]];
-
   rekod.getRange(targetRow, 1, 1, 7).setValues(values);
 
   let incidentSaved = false;
-  if (payload.incident && (payload.incident.enabled || payload.incident.note || payload.incident.officer)) {
+  if (payload.incident && payload.incident.enabled) {
     incidentSaved = appendCatatan_(ss, {
       date: payload.incident.date || payload.date,
       time: payload.incident.time || '',
@@ -145,31 +123,22 @@ function handleSubmit(payload) {
     });
   }
 
-  return { ok: true, row: targetRow, incidentSaved: incidentSaved };
+  return { ok: true, row: targetRow, incidentSaved };
 }
 
 function idForLokasi_(lokasi) {
   const key = String(lokasi || '').toUpperCase();
-  if (SPREADSHEET_IDS[key]) {
-    return SPREADSHEET_IDS[key];
-  }
+  if (SPREADSHEET_IDS[key]) return SPREADSHEET_IDS[key];
   throw new Error('Lokasi peti sejuk tidak sah: ' + lokasi);
 }
 
 function rowFor_(isoDate, slot) {
   const d = new Date(isoDate);
-  if (isNaN(d)) throw new Error('Tarikh tidak sah.');
-  
-  const y = d.getFullYear();
-  if (y < BASE_YEAR || y > LAST_YEAR) {
-    throw new Error(`Tarikh mesti antara tahun ${BASE_YEAR} hingga ${LAST_YEAR}.`);
-  }
-  
+  if (isNaN(d.getTime())) throw new Error('Tarikh tidak sah.');
   d.setHours(0,0,0,0);
   const base = new Date(BASE_YEAR, 0, 1);
   const days = Math.floor((d - base) / (1000 * 60 * 60 * 24));
   const offset = (String(slot).toUpperCase() === 'PM') ? 1 : 0;
-  
   return START_ROW + (days * 2) + offset;
 }
 
@@ -182,42 +151,20 @@ function fullPerkaraFromLetter_(letter) {
     D: 'D - PEMBANTU TEKNIK DIPANGGIL UNTUK PENAMBAHBAIKAN',
     E: 'E - PETI SEJUK DALAM PEMBAIKAN'
   };
-  return map[val] || (letter ? String(letter).trim() : '');
+  return map[val] || val || '';
 }
 
 function appendCatatan_(ss, payload) {
   let sheet = ss.getSheetByName(SHEET_TAB_CATATAN);
   if (!sheet) {
     sheet = ss.insertSheet(SHEET_TAB_CATATAN);
-    const headers = [['Tarikh', 'Masa', 'Perkara/Penjelasan', 'Nama Pegawai']];
-    sheet.getRange(1, 1, 1, 4).setValues(headers);
-    sheet.getRange(1, 1, 1, 4).setFontWeight('bold').setBackground('#FFF2CC');
+    sheet.getRange(1, 1, 1, 4).setValues([['Tarikh','Masa','Perkara/Penjelasan','Nama Pegawai']]);
   }
-  
-  const dateObj = new Date(payload.date);
-  const dateFormatted = formatDateDDMMYYYY_(dateObj);
-
   sheet.appendRow([
-    dateFormatted,
+    new Date(payload.date),
     payload.time || '',
     (payload.note || '').trim(),
     (payload.officer || '').trim()
   ]);
   return true;
-}
-
-function initRekodSheet_(ss) {
-  let sheet = ss.insertSheet(SHEET_TAB_REKOD);
-  const headers = [['Tarikh', 'Waktu', 'Suhu Minimum', 'Suhu Semasa', 'Suhu Maksimum', 'Perkara', 'Tandatangan Pencatat']];
-  sheet.getRange(1, 1, 1, 7).setValues(headers);
-  sheet.getRange(1, 1, 1, 7).setFontWeight('bold').setBackground('#FCE5CD');
-  return sheet;
-}
-
-function formatDateDDMMYYYY_(d) {
-  if (isNaN(d)) return '';
-  const day = String(d.getDate()).padStart(2, '0');
-  const month = String(d.getMonth() + 1).padStart(2, '0');
-  const year = d.getFullYear();
-  return `${day}/${month}/${year}`;
 }
