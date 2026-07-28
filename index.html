@@ -572,7 +572,6 @@
       } else {
         badge.className = 'temp-badge warn';
         badge.textContent = '⚠️ Luar Normal (+2.0 ke +8.0 °C)';
-        // Auto select Ya for incident if temp out of safe range
         document.getElementById('incidentYes').checked = true;
         toggleIncident(true);
       }
@@ -624,15 +623,17 @@
 
       if (webAppUrl) {
         try {
-          const res = await fetch(webAppUrl, {
+          // Use mode: 'no-cors' for cross-origin submission to Apps Script without CORS read blocking
+          await fetch(webAppUrl, {
             method: 'POST',
+            mode: 'no-cors',
             headers: { 'Content-Type': 'text/plain;charset=utf-8' },
             body: JSON.stringify(payload)
           });
-          const data = await res.json();
-          if (data.ok) success = true;
+          success = true;
         } catch (err) {
           console.warn('Network error, saving locally:', err);
+          success = false;
         }
       }
 
