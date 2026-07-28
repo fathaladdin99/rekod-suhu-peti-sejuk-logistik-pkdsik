@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistem Rekod Suhu Peti Sejuk Farmasi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      --bg-main: #f0f4f9;
+      --bg-card: #ffffff;
+      --bg-subtle: #f8fafc;
+      --border-color: #cbd5e1;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --primary: #2563eb;
+      --primary-dark: #1e3a8a;
+      --primary-light: #eff6ff;
+      --success: #16a34a;
+      --success-bg: #f0fdf4;
+      --warning: #d97706;
+      --warning-bg: #fffbeb;
+      --danger: #dc2626;
+      --danger-bg: #fef2f2;
+      --radius: 12px;
+      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-family);
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      line-height: 1.5;
+      padding-bottom: 50px;
+    }
+
+    /* Banner Header */
+    .header {
+      background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+      color: white;
+      padding: 24px 20px 40px;
+      text-align: center;
+      position: relative;
+    }
+    .header h1 { font-size: 1.6rem; font-weight: 800; }
+    .header p { font-size: 0.9rem; opacity: 0.9; margin-top: 4px; }
+
+    /* Admin Settings Lock Icon */
+    .admin-lock-btn {
+      position: absolute;
+      top: 16px; right: 16px;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.35);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 800px;
+      margin: -20px auto 0;
+      padding: 0 16px;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* Fridge Tabs */
+    .tabs-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      background: #ffffff;
+      padding: 10px;
+      border-radius: var(--radius);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+      margin-bottom: 20px;
+      border: 1.5px solid var(--primary-light);
+    }
+    @media (max-width: 600px) {
+      .tabs-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    .tab-btn {
+      background: var(--bg-subtle);
+      border: 1.5px solid var(--border-color);
+      padding: 12px 8px;
+      border-radius: 8px;
+      font-family: inherit;
+      font-weight: 800;
+      font-size: 0.92rem;
+      color: var(--text-main);
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+    .tab-btn.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary-dark);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+    }
+
+    /* Form Card */
+    .card {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+      border: 1px solid var(--border-color);
+    }
+
+    .form-section {
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 16px;
+      background: var(--bg-subtle);
+    }
+    .section-label {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--primary-dark);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      letter-spacing: 0.04em;
+    }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+    @media (max-width: 640px) {
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    }
+
+    label { display: block; font-weight: 700; font-size: 0.88rem; margin-bottom: 4px; }
+    input[type="text"], input[type="number"], input[type="date"], input[type="time"], select, textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.92rem;
+      background: white;
+    }
+
+    /* Slot Radio Pills */
+    .slot-group { display: flex; gap: 10px; }
+    .slot-pill { flex: 1; }
+    .slot-pill input { display: none; }
+    .slot-pill label {
+      display: block;
+      text-align: center;
+      padding: 10px;
+      border: 1.5px solid var(--border-color);
+      border-radius: 8px;
+      background: white;
+      cursor: pointer;
+      font-weight: 700;
+    }
+    .slot-pill input:checked + label {
+      border-color: var(--primary);
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+
+    /* Time Window Badge */
+    .window-badge {
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-top: 10px;
+    }
+    .window-badge.in { background: var(--success-bg); color: var(--success); border: 1px solid #bbf7d0; }
+    .window-badge.out { background: var(--warning-bg); color: var(--warning); border: 1px solid #fef3c7; }
+
+    /* Temp Badge */
+    .temp-badge { font-size: 0.75rem; font-weight: 700; padding: 2px 6px; border-radius: 4px; margin-top: 4px; display: inline-block; }
+    .temp-badge.ok { background: var(--success-bg); color: var(--success); }
+    .temp-badge.warn { background: var(--danger-bg); color: var(--danger); }
+
+    /* Incident Radios */
+    .incident-radios { display: flex; gap: 20px; align-items: center; margin-top: 6px; }
+    .radio-label { display: flex; align-items: center; gap: 6px; font-weight: 700; cursor: pointer; }
+    .radio-label input { accent-color: var(--primary); width: 18px; height: 18px; }
+
+    .incident-fields {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1.5px dashed var(--border-color);
+    }
+
+    /* Action Buttons */
+    .btn {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+    }
+    .btn-primary { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
+    .btn-secondary { background: var(--bg-subtle); color: var(--text-main); border: 1px solid var(--border-color); }
+    .actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px; }
+
+    /* Table */
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    th, td { padding: 10px 12px; border-bottom: 1px solid var(--border-color); text-align: left; }
+    th { background: var(--bg-subtle); font-weight: 700; color: var(--text-muted); }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(15, 23, 42, 0.5);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.2s;
+    }
+    .modal-overlay.active { opacity: 1; pointer-events: auto; }
+    .modal-box {
+      background: white;
+      padding: 24px;
+      border-radius: var(--radius);
+      width: 90%;
+      max-width: 440px;
+      text-align: center;
+      position: relative;
+    }
+    .close-x-btn {
+      position: absolute;
+      top: 12px;
+      right: 14px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      font-size: 1.2rem;
+      line-height: 1;
+      cursor: pointer;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .close-x-btn:hover {
+      background: var(--danger-bg);
+      color: var(--danger);
+      border-color: var(--danger);
+    }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <button class="admin-lock-btn" onclick="openAdminSettings()">🔒 Admin Config</button>
+    <h1>❄️ Rekod Suhu Peti Sejuk Farmasi</h1>
+    <p>Sistem Pemantauan Rangkaian Sejuk (Morning 7am-1pm | Evening 2pm-6pm)</p>
+  </header>
+
+  <main class="container">
+
+    <!-- Tab Selection for 4 Fridges -->
+    <div class="tabs-grid">
+      <button type="button" class="tab-btn active" data-fridge="PETI_SEJUK_1" onclick="selectFridge('PETI_SEJUK_1')">Peti Sejuk 1</button>
+      <button type="button" class="tab-btn" data-fridge="PETI_SEJUK_2" onclick="selectFridge('PETI_SEJUK_2')">Peti Sejuk 2</button>
+      <button type="button" class="tab-btn" data-fridge="PETI_SEJUK_3" onclick="selectFridge('PETI_SEJUK_3')">Peti Sejuk 3</button>
+      <button type="button" class="tab-btn" data-fridge="PETI_SEJUK_4" onclick="selectFridge('PETI_SEJUK_4')">Peti Sejuk 4</button>
+    </div>
+
+    <!-- Form Card -->
+    <div class="card">
+      <form id="tempForm">
+        
+        <!-- Fridge Selector Dropdown -->
+        <div class="form-section" style="background:var(--primary-light); border-color:var(--primary);">
+          <div class="section-label" style="color:var(--primary-dark);">📍 PILIH PETI SEJUK</div>
+          <select id="lokasiSelect" name="lokasi" style="font-weight:800; font-size:1.05rem; padding:12px; color:var(--primary-dark);" onchange="selectFridge(this.value)">
+            <option value="PETI_SEJUK_1">Peti Sejuk 1</option>
+            <option value="PETI_SEJUK_2">Peti Sejuk 2</option>
+            <option value="PETI_SEJUK_3">Peti Sejuk 3</option>
+            <option value="PETI_SEJUK_4">Peti Sejuk 4</option>
+          </select>
+        </div>
+
+        <!-- Section 1: Date & Time Slot -->
+        <div class="form-section">
+          <div class="section-label">1. Tarikh & Waktu Log</div>
+          <div class="grid-2">
+            <div>
+              <label for="dateInput">Tarikh Log</label>
+              <input type="date" id="dateInput" name="date" required>
+            </div>
+            <div>
+              <label>Sesi Waktu Log</label>
+              <div class="slot-group">
+                <div class="slot-pill">
+                  <input type="radio" id="slotAM" name="slot" value="AM" checked onchange="checkTimeWindow()">
+                  <label for="slotAM">AM (7am - 1pm)</label>
+                </div>
+                <div class="slot-pill">
+                  <input type="radio" id="slotPM" name="slot" value="PM" onchange="checkTimeWindow()">
+                  <label for="slotPM">PM (2pm - 6pm)</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="windowBadge" class="window-badge in">Status waktu log.</div>
+        </div>
+
+        <!-- Section 2: Temperature Readings -->
+        <div class="form-section">
+          <div class="section-label">2. Bacaan Suhu (°C)</div>
+          <div class="grid-3">
+            <div>
+              <label for="min">Suhu Minimum</label>
+              <input type="number" step="0.1" id="min" name="min" required oninput="validateTemp('min')">
+              <span id="minBadge" class="temp-badge hidden"></span>
+            </div>
+            <div>
+              <label for="semasa">Suhu Semasa</label>
+              <input type="number" step="0.1" id="semasa" name="semasa" required oninput="validateTemp('semasa')">
+              <span id="semasaBadge" class="temp-badge hidden"></span>
+            </div>
+            <div>
+              <label for="max">Suhu Maksimum</label>
+              <input type="number" step="0.1" id="max" name="max" required oninput="validateTemp('max')">
+              <span id="maxBadge" class="temp-badge hidden"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 3: Perkara Dropdown -->
+        <div class="form-section">
+          <div class="section-label">3. Perkara / Catatan</div>
+          <select id="perkaraSelect" name="perkara">
+            <option value="">-- Pilih Perkara (Jika Ada Problem) --</option>
+            <option value="A">A - TIADA PRODUK/BAHAN RANGKAIAN SEJUK DISIMPAN</option>
+            <option value="B">B - TIDAK CUKUP BEKALAN ELEKTRIK</option>
+            <option value="C">C - PETI SEJUK TIDAK BERFUNGSI DENGAN BETUL</option>
+            <option value="D">D - PEMBANTU TEKNIK DIPANGGIL UNTUK PENAMBAHBAIKAN</option>
+            <option value="E">E - PETI SEJUK DALAM PEMBAIKAN</option>
+          </select>
+        </div>
+
+        <!-- Section 4: Signature / Recorder Name -->
+        <div class="form-section">
+          <div class="section-label">4. Tandatangan Pencatat</div>
+          <div>
+            <label for="nama">Nama Ringkas Pencatat</label>
+            <input type="text" id="nama" name="nama" placeholder="Contoh: John Wick" required>
+          </div>
+        </div>
+
+        <!-- Section 5: Catatan Suhu Luar Julat (Optional) -->
+        <div class="form-section">
+          <div class="section-label">5. Catatan Suhu Luar Julat (Optional)</div>
+          <label>Suhu Luar Julat? Isi Catatan Suhu Luar Julat</label>
+          <div class="incident-radios">
+            <label class="radio-label">
+              <input type="radio" name="incidentToggle" id="incidentNo" value="NO" checked onchange="toggleIncident(false)"> Tidak
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="incidentToggle" id="incidentYes" value="YES" onchange="toggleIncident(true)"> Ya
+            </label>
+          </div>
+
+          <div id="incidentBox" class="incident-fields hidden">
+            <div class="grid-2" style="margin-bottom:12px;">
+              <div>
+                <label for="incidentDate">Tarikh</label>
+                <input type="date" id="incidentDate">
+              </div>
+              <div>
+                <label for="incidentTime">Masa</label>
+                <input type="time" id="incidentTime">
+              </div>
+            </div>
+
+            <div style="margin-bottom:12px;">
+              <label for="incidentOfficer">Nama Pegawai</label>
+              <input type="text" id="incidentOfficer" placeholder="Nama Pegawai (cth: Nur Hafiza binti Maakib)">
+            </div>
+
+            <div>
+              <label for="incidentNote">Perkara/Penjelasan</label>
+              <textarea id="incidentNote" rows="3" placeholder="Terangkan apa berlaku & tindakan diambil..."></textarea>
+            </div>
+            <div style="font-size:0.78rem; color:var(--text-muted); margin-top:6px;">
+              Jika bacaan di luar julat, anda boleh tambah catatan (tidak wajib).
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit Actions -->
+        <div class="actions">
+          <button type="button" class="btn btn-secondary" onclick="resetForm()">Reset</button>
+          <button type="submit" class="btn btn-primary" id="submitBtn" style="width:auto;">🚀 Hantar Rekod Suhu</button>
+        </div>
+
+        <div style="text-align:center; font-size:0.8rem; color:var(--text-muted); margin-top:12px;">
+          Setiap hari mempunyai 2 slot: AM & PM.
+        </div>
+
+      </form>
+    </div>
+
+    <!-- Live Log Preview -->
+    <div class="card">
+      <h3 style="margin-bottom:12px; font-size:1.05rem;">📋 Rekod Terbaru (<span id="tableFridgeTitle">Peti Sejuk 1</span>)</h3>
+      <div style="overflow-x:auto;">
+        <table>
+          <thead>
+            <tr>
+              <th>Tarikh</th>
+              <th>Waktu</th>
+              <th>Min</th>
+              <th>Semasa</th>
+              <th>Max</th>
+              <th>Perkara</th>
+              <th>Pencatat</th>
+            </tr>
+          </thead>
+          <tbody id="logTable">
+            <tr><td colspan="7" style="text-align:center; color:var(--text-muted);">Tiada rekod disimpan lagi.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Protected Admin Password / Settings Modal -->
+  <div id="settingsModal" class="modal-overlay">
+    <div class="modal-box" style="text-align:left;">
+      <!-- Close Button X -->
+      <button type="button" class="close-x-btn" onclick="closeSettings()" title="Tutup">&times;</button>
+
+      <h3 style="margin-bottom:8px;">🔒 Tetapan Admin Server</h3>
+      <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:14px;">
+        Hanya Admin boleh mengemas kini Web App URL ini.
+      </p>
+      
+      <div id="pinBox" style="margin-bottom:12px;">
+        <label for="adminPin">Masukkan PIN Admin</label>
+        <input type="password" id="adminPin" placeholder="Masukkan PIN Admin">
+        <div style="display:flex; gap:10px; margin-top:10px;">
+          <button type="button" class="btn btn-secondary" style="flex:1;" onclick="closeSettings()">Tutup</button>
+          <button type="button" class="btn btn-primary" style="flex:1;" onclick="unlockAdmin()">Unlock Tetapan</button>
+        </div>
+      </div>
+
+      <div id="urlBox" class="hidden">
+        <label for="webAppUrl">Google Apps Script Web App URL</label>
+        <input type="url" id="webAppUrl" placeholder="https://script.google.com/macros/s/.../exec">
+        <div class="actions" style="margin-top:16px;">
+          <button type="button" class="btn btn-secondary" onclick="closeSettings()">Batal</button>
+          <button type="button" class="btn btn-primary" style="width:auto;" onclick="saveSettings()">Simpan URL</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Modal -->
+  <div id="successModal" class="modal-overlay">
+    <div class="modal-box">
+      <h2 style="color:var(--success);">✅ Berjaya Dihantar!</h2>
+      <p style="margin-top:8px;" id="successText">Rekod suhu telah berjaya disimpan.</p>
+    </div>
+  </div>
+
+  <script>
+    // HARDCODED WEB APP URL & SECRET ADMIN PIN
+    let HARDCODED_URL = 'https://script.google.com/macros/s/AKfycbw7Ltd8m5X_pxqjudaR5UJ1GeKyXwu5pcaqSeTcwzmeXXo7MCcWIVaS1_4ZkyNVj2LQ5Q/exec'; 
+    let ADMIN_PIN = '2104';
+
+    let currentFridge = 'PETI_SEJUK_1';
+    let webAppUrl = HARDCODED_URL;
+    let logs = JSON.parse(localStorage.getItem('fridge_logs') || '[]');
+
+    const FRIDGE_NAMES = {
+      'PETI_SEJUK_1': 'Peti Sejuk 1',
+      'PETI_SEJUK_2': 'Peti Sejuk 2',
+      'PETI_SEJUK_3': 'Peti Sejuk 3',
+      'PETI_SEJUK_4': 'Peti Sejuk 4'
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('webAppUrl').value = webAppUrl;
+      initForm();
+      selectFridge('PETI_SEJUK_1');
+      renderLogs();
+    });
+
+    function selectFridge(fridgeKey) {
+      currentFridge = fridgeKey;
+
+      // Sync Dropdown
+      document.getElementById('lokasiSelect').value = fridgeKey;
+
+      // Sync Tabs
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        if (btn.getAttribute('data-fridge') === fridgeKey) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      // Sync Title
+      const name = FRIDGE_NAMES[fridgeKey] || fridgeKey;
+      document.getElementById('tableFridgeTitle').textContent = name;
+
+      renderLogs();
+    }
+
+    function initForm() {
+      const d = new Date();
+      const iso = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+      const timeStr = `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+
+      document.getElementById('dateInput').value = iso;
+      document.getElementById('incidentDate').value = iso;
+      document.getElementById('incidentTime').value = timeStr;
+
+      const hour = d.getHours();
+      const slot = hour >= 14 ? 'PM' : 'AM';
+      document.querySelector(`input[name="slot"][value="${slot}"]`).checked = true;
+      checkTimeWindow();
+    }
+
+    function checkTimeWindow() {
+      const hour = new Date().getHours();
+      const slot = document.querySelector('input[name="slot"]:checked').value;
+      const badge = document.getElementById('windowBadge');
+
+      if (slot === 'AM') {
+        if (hour >= 7 && hour < 13) {
+          badge.className = 'window-badge in';
+          badge.innerHTML = '🟢 Dalam Sesi Waktu AM Rasmi (7:00 AM - 1:00 PM)';
+        } else {
+          badge.className = 'window-badge out';
+          badge.innerHTML = '⚠️ Luar Masa AM Rasmi (7:00 AM - 1:00 PM)';
+        }
+      } else {
+        if (hour >= 14 && hour <= 18) {
+          badge.className = 'window-badge in';
+          badge.innerHTML = '🟢 Dalam Sesi Waktu PM Rasmi (2:00 PM - 6:00 PM)';
+        } else {
+          badge.className = 'window-badge out';
+          badge.innerHTML = '⚠️ Luar Masa PM Rasmi (2:00 PM - 6:00 PM)';
+        }
+      }
+    }
+
+    function validateTemp(id) {
+      const val = parseFloat(document.getElementById(id).value);
+      const badge = document.getElementById(id + 'Badge');
+      if (isNaN(val)) { badge.className = 'temp-badge hidden'; return; }
+
+      if (val >= 2.0 && val <= 8.0) {
+        badge.className = 'temp-badge ok';
+        badge.textContent = '✅ Selamat (+2.0 ke +8.0 °C)';
+      } else {
+        badge.className = 'temp-badge warn';
+        badge.textContent = '⚠️ Luar Normal (+2.0 ke +8.0 °C)';
+        // Auto select Ya for incident if temp out of safe range
+        document.getElementById('incidentYes').checked = true;
+        toggleIncident(true);
+      }
+    }
+
+    function toggleIncident(show) {
+      document.getElementById('incidentBox').classList.toggle('hidden', !show);
+    }
+
+    function resetForm() {
+      document.getElementById('tempForm').reset();
+      document.getElementById('incidentNo').checked = true;
+      toggleIncident(false);
+      initForm();
+      ['minBadge', 'semasaBadge', 'maxBadge'].forEach(id => {
+        document.getElementById(id).className = 'temp-badge hidden';
+      });
+    }
+
+    document.getElementById('tempForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      btn.textContent = 'Menghantar...';
+
+      const payload = {
+        lokasi: currentFridge,
+        date: fd.get('date'),
+        slot: fd.get('slot'),
+        min: fd.get('min'),
+        semasa: fd.get('semasa'),
+        max: fd.get('max'),
+        perkara: fd.get('perkara'),
+        nama: fd.get('nama')
+      };
+
+      if (document.getElementById('incidentYes').checked) {
+        payload.incident = {
+          enabled: true,
+          date: document.getElementById('incidentDate').value || payload.date,
+          time: document.getElementById('incidentTime').value || '',
+          officer: document.getElementById('incidentOfficer').value || payload.nama || '',
+          note: document.getElementById('incidentNote').value || ''
+        };
+      }
+
+      let success = false;
+
+      if (webAppUrl) {
+        try {
+          const res = await fetch(webAppUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify(payload)
+          });
+          const data = await res.json();
+          if (data.ok) success = true;
+        } catch (err) {
+          console.warn('Network error, saving locally:', err);
+        }
+      }
+
+      logs.unshift({ ...payload, synced: success });
+      localStorage.setItem('fridge_logs', JSON.stringify(logs));
+
+      btn.disabled = false;
+      btn.textContent = '🚀 Hantar Rekod Suhu';
+
+      showSuccess(success);
+      resetForm();
+      renderLogs();
+    });
+
+    function renderLogs() {
+      const tbody = document.getElementById('logTable');
+      const filtered = logs.filter(l => l.lokasi === currentFridge);
+      if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:var(--text-muted);">Tiada rekod disimpan lagi.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = filtered.slice(0, 10).map(r => `
+        <tr>
+          <td><b>${r.date}</b></td>
+          <td>${r.slot}</td>
+          <td>${r.min} °C</td>
+          <td><b>${r.semasa} °C</b></td>
+          <td>${r.max} °C</td>
+          <td>${r.perkara || '-'}</td>
+          <td>${r.nama} ${r.synced ? '✅' : '💾'}</td>
+        </tr>
+      `).join('');
+    }
+
+    function openAdminSettings() {
+      document.getElementById('pinBox').classList.remove('hidden');
+      document.getElementById('urlBox').classList.add('hidden');
+      document.getElementById('adminPin').value = '';
+      document.getElementById('settingsModal').classList.add('active');
+    }
+
+    function unlockAdmin() {
+      const pin = document.getElementById('adminPin').value;
+      if (pin === ADMIN_PIN) {
+        document.getElementById('pinBox').classList.add('hidden');
+        document.getElementById('urlBox').classList.remove('hidden');
+      } else {
+        alert('PIN Admin Salah!');
+      }
+    }
+
+    function closeSettings() { document.getElementById('settingsModal').classList.remove('active'); }
+
+    function saveSettings() {
+      webAppUrl = document.getElementById('webAppUrl').value.trim();
+      localStorage.setItem('fridge_url', webAppUrl);
+      closeSettings();
+      alert('URL Web App Berjaya Dikunci & Disimpan!');
+    }
+
+    function showSuccess(isSynced) {
+      const modal = document.getElementById('successModal');
+      document.getElementById('successText').textContent = isSynced 
+        ? 'Rekod berjaya dihantar ke Google Spreadsheet!' 
+        : 'Rekod telah disimpan secara lokal (Offline).';
+      modal.classList.add('active');
+      setTimeout(() => modal.classList.remove('active'), 2000);
+    }
+  </script>
+</body>
+</html>
