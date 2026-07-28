@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sistem Rekod Suhu Peti Sejuk Farmasi</title>
+  <title>REKOD SUHU PETI SEJUK - UNIT FARMASI LOGISTIK PKD SIK</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -42,12 +42,12 @@
     .header {
       background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
       color: white;
-      padding: 24px 20px 40px;
+      padding: 26px 20px 42px;
       text-align: center;
       position: relative;
     }
-    .header h1 { font-size: 1.6rem; font-weight: 800; }
-    .header p { font-size: 0.9rem; opacity: 0.9; margin-top: 4px; }
+    .header h1 { font-size: 1.65rem; font-weight: 800; letter-spacing: 0.02em; }
+    .header p { font-size: 0.95rem; font-weight: 700; opacity: 0.92; margin-top: 4px; letter-spacing: 0.04em; }
 
     /* Admin Settings Lock Icon */
     .admin-lock-btn {
@@ -207,6 +207,7 @@
       cursor: pointer;
     }
     .btn-primary { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
+    .btn-warning { background: var(--warning); color: white; box-shadow: 0 4px 12px rgba(217, 119, 6, 0.3); }
     .btn-secondary { background: var(--bg-subtle); color: var(--text-main); border: 1px solid var(--border-color); }
     .actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px; }
 
@@ -228,7 +229,7 @@
       padding: 24px;
       border-radius: var(--radius);
       width: 90%;
-      max-width: 440px;
+      max-width: 450px;
       text-align: center;
       position: relative;
     }
@@ -262,8 +263,8 @@
 
   <header class="header">
     <button class="admin-lock-btn" onclick="openAdminSettings()">🔒 Admin Config</button>
-    <h1>❄️ Rekod Suhu Peti Sejuk Farmasi</h1>
-    <p>Sistem Pemantauan Rangkaian Sejuk (Morning 7am-1pm | Evening 2pm-6pm)</p>
+    <h1>❄️ REKOD SUHU PETI SEJUK</h1>
+    <p>UNIT FARMASI LOGISTIK PKD SIK</p>
   </header>
 
   <main class="container">
@@ -438,10 +439,25 @@
 
   </main>
 
+  <!-- Overwrite Confirmation Warning Modal -->
+  <div id="overwriteModal" class="modal-overlay">
+    <div class="modal-box">
+      <button type="button" class="close-x-btn" onclick="closeOverwriteModal()">&times;</button>
+      <div style="font-size:2.5rem; margin-bottom:8px;">⚠️</div>
+      <h3 style="color:var(--warning); margin-bottom:8px; font-weight:800;">Rekod Slot Telah Diisi!</h3>
+      <p id="overwriteMsg" style="font-size:0.9rem; color:var(--text-muted); margin-bottom:20px;">
+        Suhu telah dicatatkan pada tarikh dan slot (AM/PM) ini. Adakah anda pasti mahu overwrite (gantikan) data ini?
+      </p>
+      <div style="display:flex; gap:12px; justify-content:center;">
+        <button class="btn btn-secondary" onclick="closeOverwriteModal()">Batal</button>
+        <button class="btn btn-warning" id="confirmOverwriteBtn">Gantikan Data (Overwrite)</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Protected Admin Password / Settings Modal -->
   <div id="settingsModal" class="modal-overlay">
     <div class="modal-box" style="text-align:left;">
-      <!-- Close Button X -->
       <button type="button" class="close-x-btn" onclick="closeSettings()" title="Tutup">&times;</button>
 
       <h3 style="margin-bottom:8px;">🔒 Tetapan Admin Server</h3>
@@ -485,6 +501,7 @@
     let currentFridge = 'PETI_SEJUK_1';
     let webAppUrl = HARDCODED_URL;
     let logs = JSON.parse(localStorage.getItem('fridge_logs') || '[]');
+    let pendingPayload = null;
 
     const FRIDGE_NAMES = {
       'PETI_SEJUK_1': 'Peti Sejuk 1',
@@ -502,11 +519,8 @@
 
     function selectFridge(fridgeKey) {
       currentFridge = fridgeKey;
-
-      // Sync Dropdown
       document.getElementById('lokasiSelect').value = fridgeKey;
 
-      // Sync Tabs
       document.querySelectorAll('.tab-btn').forEach(btn => {
         if (btn.getAttribute('data-fridge') === fridgeKey) {
           btn.classList.add('active');
@@ -515,7 +529,6 @@
         }
       });
 
-      // Sync Title
       const name = FRIDGE_NAMES[fridgeKey] || fridgeKey;
       document.getElementById('tableFridgeTitle').textContent = name;
 
@@ -591,12 +604,10 @@
       });
     }
 
+    // Main Submit Handler
     document.getElementById('tempForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const fd = new FormData(e.target);
-      const btn = document.getElementById('submitBtn');
-      btn.disabled = true;
-      btn.textContent = 'Menghantar...';
 
       const payload = {
         lokasi: currentFridge,
@@ -606,7 +617,8 @@
         semasa: fd.get('semasa'),
         max: fd.get('max'),
         perkara: fd.get('perkara'),
-        nama: fd.get('nama')
+        nama: fd.get('nama'),
+        overwrite: false
       };
 
       if (document.getElementById('incidentYes').checked) {
@@ -619,11 +631,46 @@
         };
       }
 
+      // Check if slot already exists in local logs
+      const existing = logs.find(
+        l => l.lokasi === payload.lokasi && l.date === payload.date && l.slot === payload.slot
+      );
+
+      if (existing && !payload.overwrite) {
+        pendingPayload = payload;
+        const fridgeLabel = FRIDGE_NAMES[payload.lokasi] || payload.lokasi;
+        document.getElementById('overwriteMsg').textContent = 
+          `Data suhu telah pun diisi untuk slot (${payload.slot}) pada tarikh (${payload.date}) bagi ${fridgeLabel}. Adakah anda pasti mahu overwrite (gantikan) data ini?`;
+        document.getElementById('overwriteModal').classList.add('active');
+        return;
+      }
+
+      await sendDataToSheet(payload);
+    });
+
+    // Confirm Overwrite Button Handler
+    document.getElementById('confirmOverwriteBtn').addEventListener('click', async () => {
+      closeOverwriteModal();
+      if (pendingPayload) {
+        pendingPayload.overwrite = true;
+        await sendDataToSheet(pendingPayload);
+        pendingPayload = null;
+      }
+    });
+
+    function closeOverwriteModal() {
+      document.getElementById('overwriteModal').classList.remove('active');
+    }
+
+    async function sendDataToSheet(payload) {
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      btn.textContent = 'Menghantar...';
+
       let success = false;
 
       if (webAppUrl) {
         try {
-          // Use mode: 'no-cors' for cross-origin submission to Apps Script without CORS read blocking
           await fetch(webAppUrl, {
             method: 'POST',
             mode: 'no-cors',
@@ -637,6 +684,8 @@
         }
       }
 
+      // Remove previous duplicate if overwriting
+      logs = logs.filter(l => !(l.lokasi === payload.lokasi && l.date === payload.date && l.slot === payload.slot));
       logs.unshift({ ...payload, synced: success });
       localStorage.setItem('fridge_logs', JSON.stringify(logs));
 
@@ -646,7 +695,7 @@
       showSuccess(success);
       resetForm();
       renderLogs();
-    });
+    }
 
     function renderLogs() {
       const tbody = document.getElementById('logTable');
