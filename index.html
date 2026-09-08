@@ -2,8 +2,8 @@
 <html lang="ms">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>REKOD SUHU PETI SEJUK — UNIT FARMASI LOGISTIK PKD SIK</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Rekod Suhu Peti Sejuk — Unit Farmasi Logistik PKD Sik</title>
 
   <!-- Google Fonts & Chart.js -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,18 +14,20 @@
   <style>
     :root {
       --font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-      --bg-main: #f1f5f9;
+      --bg-main: #f0f4f8;
       --bg-card: #ffffff;
       --bg-subtle: #f8fafc;
       --border-color: #cbd5e1;
+      --border-light: #e2e8f0;
       --text-main: #0f172a;
       --text-muted: #64748b;
       
       --primary: #2563eb;
-      --primary-dark: #1e3a8a;
+      --primary-dark: #1d4ed8;
       --primary-light: #eff6ff;
+      --primary-border: #bfdbfe;
 
-      --success: #059669;
+      --success: #16a34a;
       --success-bg: #ecfdf5;
       --success-border: #a7f3d0;
 
@@ -37,13 +39,13 @@
       --danger-bg: #fef2f2;
       --danger-border: #fecaca;
 
-      --radius-lg: 16px;
+      --radius-lg: 14px;
       --radius-md: 10px;
-      --radius-sm: 6px;
+      --radius-sm: 7px;
 
-      --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
-      --shadow-md: 0 10px 25px -5px rgba(15, 23, 42, 0.08);
-      --shadow-lg: 0 20px 30px -10px rgba(15, 23, 42, 0.15);
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 16px -2px rgba(15, 23, 42, 0.08);
+      --shadow-lg: 0 12px 28px -4px rgba(15, 23, 42, 0.12);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -52,344 +54,518 @@
       font-family: var(--font-family);
       background-color: var(--bg-main);
       color: var(--text-main);
-      line-height: 1.5;
-      padding-bottom: 60px;
+      line-height: 1.45;
+      padding-bottom: 40px;
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Header Banner */
+    /* Top App Header */
     .app-header {
       background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #2563eb 100%);
       color: white;
-      padding: 26px 20px 48px;
+      padding: 16px 16px 36px;
       position: relative;
-      box-shadow: 0 4px 20px rgba(30, 58, 138, 0.25);
+      box-shadow: 0 4px 20px rgba(30, 58, 138, 0.2);
+      text-align: center;
     }
 
     .header-container {
-      max-width: 920px;
+      max-width: 580px;
       margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
+      position: relative;
     }
 
     .brand-badge {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
       background: rgba(255, 255, 255, 0.18);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      padding: 3px 10px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      padding: 3px 12px;
       border-radius: 20px;
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       font-weight: 800;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
       margin-bottom: 6px;
+      color: #f8fafc;
     }
 
     .brand-title {
-      font-size: 1.5rem;
+      font-size: 1.35rem;
       font-weight: 800;
-      letter-spacing: -0.01em;
-    }
-
-    .brand-subtitle {
-      font-size: 0.9rem;
-      opacity: 0.92;
-      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
     }
 
     .header-controls {
+      position: absolute;
+      top: 0;
+      right: 0;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 6px;
     }
 
     .icon-btn {
-      background: rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.18);
       border: 1px solid rgba(255, 255, 255, 0.3);
       color: white;
-      padding: 8px 14px;
-      border-radius: 10px;
+      padding: 6px 10px;
+      border-radius: 8px;
       font-family: inherit;
-      font-size: 0.82rem;
+      font-size: 0.78rem;
       font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 4px;
       transition: all 0.2s ease;
+      backdrop-filter: blur(4px);
     }
 
     .icon-btn:hover {
-      background: rgba(255, 255, 255, 0.28);
+      background: rgba(255, 255, 255, 0.3);
       transform: translateY(-1px);
     }
 
-    /* Main Wrapper */
+    /* Main Container */
     .main-wrapper {
-      max-width: 920px;
-      margin: -24px auto 0;
-      padding: 0 16px;
+      max-width: 580px;
+      margin: -22px auto 0;
+      padding: 0 12px;
       position: relative;
       z-index: 10;
     }
 
-    /* Refrigerator Switcher Tabs */
-    .location-tabs-card {
+    /* Fridge Switcher Cards Grid */
+    .fridge-tabs-grid {
       background: var(--bg-card);
-      padding: 10px;
+      padding: 8px;
       border-radius: var(--radius-lg);
       box-shadow: var(--shadow-md);
-      margin-bottom: 20px;
-      border: 1px solid var(--border-color);
+      margin-bottom: 12px;
+      border: 1px solid var(--border-light);
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
+      gap: 6px;
     }
 
-    @media (max-width: 640px) {
-      .location-tabs-card { grid-template-columns: repeat(2, 1fr); }
+    @media (max-width: 480px) {
+      .fridge-tabs-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6px;
+      }
     }
 
-    .tab-btn {
+    .tab-card {
       background: var(--bg-subtle);
-      border: 1.5px solid var(--border-color);
-      padding: 12px 8px;
+      border: 1.5px solid var(--border-light);
+      padding: 10px 4px;
       border-radius: var(--radius-md);
       font-family: inherit;
-      font-size: 0.88rem;
-      font-weight: 700;
       color: var(--text-main);
       cursor: pointer;
       transition: all 0.2s ease;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 2px;
+      justify-content: center;
       text-align: center;
+      gap: 2px;
     }
 
-    .tab-btn:hover {
-      border-color: var(--primary);
+    .tab-card .tab-icon {
+      font-size: 1.15rem;
+      line-height: 1;
+      margin-bottom: 2px;
+    }
+
+    .tab-card .tab-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .tab-card .tab-sub {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .tab-card:hover {
+      border-color: var(--primary-border);
       background: var(--primary-light);
     }
 
-    .tab-btn.active {
+    .tab-card.active {
       background: var(--primary);
       color: white;
       border-color: var(--primary-dark);
-      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
     }
 
-    .tab-btn .tab-sub {
-      font-size: 0.72rem;
-      opacity: 0.82;
-      font-weight: 500;
+    .tab-card.active .tab-sub {
+      color: rgba(255, 255, 255, 0.88);
     }
 
-    /* Form & Cards */
-    .card {
-      background: var(--bg-card);
-      border-radius: var(--radius-lg);
-      padding: 24px;
-      box-shadow: var(--shadow-md);
-      margin-bottom: 20px;
-      border: 1px solid var(--border-color);
-    }
-
-    .card-header {
+    /* Subheader Status Bar */
+    .status-strip {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 18px;
-      padding-bottom: 12px;
-      border-bottom: 1.5px solid var(--bg-subtle);
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .card-title {
-      font-size: 1.15rem;
-      font-weight: 800;
-      color: var(--primary-dark);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .range-pill {
+      padding: 6px 10px;
+      margin-bottom: 12px;
       font-size: 0.78rem;
       font-weight: 700;
-      padding: 4px 10px;
-      border-radius: 20px;
-      background: var(--primary-light);
-      color: var(--primary-dark);
-      border: 1px solid var(--border-color);
+      color: var(--text-muted);
     }
 
-    .section-group {
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-md);
-      padding: 16px;
+    .status-strip .strip-target {
+      color: #0369a1;
+      background: #e0f2fe;
+      padding: 3px 8px;
+      border-radius: 6px;
+      border: 1px solid #bae6fd;
+    }
+
+    /* Segmented View Navigation (Borang / Sejarah / Trend) */
+    .view-segmented-nav {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      background: #e2e8f0;
+      padding: 4px;
+      border-radius: 10px;
+      margin-bottom: 14px;
+    }
+
+    .view-btn {
+      background: transparent;
+      border: none;
+      padding: 8px 4px;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      transition: all 0.2s ease;
+    }
+
+    .view-btn.active {
+      background: var(--bg-card);
+      color: var(--primary);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Form Container Card */
+    .content-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 18px 16px;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-light);
       margin-bottom: 16px;
-      background: var(--bg-subtle);
     }
 
-    .section-title {
-      font-size: 0.85rem;
-      font-weight: 800;
-      color: var(--primary-dark);
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
+    /* Form Section Block */
+    .form-block {
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
       margin-bottom: 12px;
+      background: #ffffff;
+    }
+
+    .form-block-header {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: var(--text-main);
       display: flex;
       align-items: center;
       gap: 6px;
+      margin-bottom: 10px;
     }
 
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
-
-    @media (max-width: 640px) {
-      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 10px;
+      align-items: start;
     }
 
-    label {
-      display: block;
+    @media (max-width: 440px) {
+      .form-grid-2 {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .field-label {
+      font-size: 0.78rem;
       font-weight: 700;
-      font-size: 0.85rem;
-      margin-bottom: 5px;
-      color: var(--text-main);
+      color: var(--text-muted);
+      margin-bottom: 4px;
     }
 
-    input[type="text"], input[type="number"], input[type="date"], input[type="time"], select, textarea {
+    .input-control {
       width: 100%;
-      padding: 10px 12px;
+      height: 44px;
+      padding: 0 12px;
       border: 1.5px solid var(--border-color);
       border-radius: var(--radius-sm);
       font-family: inherit;
-      font-size: 0.92rem;
-      background: var(--bg-card);
+      font-size: 0.9rem;
       color: var(--text-main);
-      transition: border-color 0.2s ease;
+      background: #ffffff;
+      transition: all 0.2s ease;
     }
 
-    input:focus, select:focus, textarea:focus {
+    .input-control:focus {
       outline: none;
       border-color: var(--primary);
       box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
     }
 
-    /* Radio Slots */
-    .slot-pill-group { display: flex; gap: 10px; }
-    .slot-pill { flex: 1; }
+    /* Slot (AM / PM) Pill Selector */
+    .slot-pill-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      height: 44px;
+    }
+
+    .slot-pill { position: relative; }
     .slot-pill input { display: none; }
+
     .slot-label {
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 10px;
+      justify-content: center;
+      height: 100%;
       border: 1.5px solid var(--border-color);
       border-radius: var(--radius-sm);
-      background: var(--bg-card);
+      background: var(--bg-subtle);
       cursor: pointer;
       font-weight: 700;
+      font-size: 0.8rem;
+      color: var(--text-muted);
       transition: all 0.2s ease;
+      user-select: none;
     }
 
     .slot-pill input:checked + .slot-label {
-      border-color: var(--primary);
-      background: var(--primary-light);
-      color: var(--primary);
-      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.15);
+      background: var(--primary);
+      border-color: var(--primary-dark);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
     }
 
-    .slot-time-range {
-      font-size: 0.72rem;
-      font-weight: 500;
-      opacity: 0.85;
-    }
-
-    /* Status Pills */
-    .status-pill-container {
-      display: flex;
-      gap: 10px;
-      margin-top: 10px;
-      flex-wrap: wrap;
-    }
-
-    .info-pill {
-      padding: 8px 12px;
-      border-radius: var(--radius-sm);
-      font-size: 0.8rem;
-      font-weight: 700;
+    /* Session Window Info Banner */
+    .session-info-badge {
       display: flex;
       align-items: center;
       gap: 6px;
-      flex: 1;
+      background: var(--success-bg);
+      border: 1px solid var(--success-border);
+      color: var(--success);
+      padding: 6px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-top: 8px;
     }
 
-    .info-pill.row-pill {
-      background: #f0f9ff;
-      color: #0369a1;
-      border: 1px solid #bae6fd;
+    .session-info-badge.out-window {
+      background: var(--warning-bg);
+      border-color: var(--warning-border);
+      color: var(--warning);
     }
 
-    .info-pill.in-window {
+    /* Temperature 3-Column Inputs */
+    .temp-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .temp-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .temp-label {
+      font-size: 0.74rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+
+    .temp-input {
+      width: 100%;
+      height: 46px;
+      text-align: center;
+      font-size: 1.15rem;
+      font-weight: 800;
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      color: var(--text-main);
+      background: #ffffff;
+      transition: all 0.2s ease;
+    }
+
+    .temp-input.highlight {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    .temp-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+    }
+
+    .temp-alert-badge {
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-top: 4px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .temp-alert-badge.ok {
       background: var(--success-bg);
       color: var(--success);
       border: 1px solid var(--success-border);
     }
 
-    .info-pill.out-window {
-      background: var(--warning-bg);
-      color: var(--warning);
-      border: 1px solid var(--warning-border);
+    .temp-alert-badge.warn {
+      background: var(--danger-bg);
+      color: var(--danger);
+      border: 1px solid var(--danger-border);
     }
 
-    /* Temp Badges */
-    .temp-badge {
-      font-size: 0.75rem;
-      font-weight: 700;
-      padding: 4px 8px;
-      border-radius: 4px;
-      margin-top: 6px;
-      display: inline-block;
-    }
-
-    .temp-badge.ok { background: var(--success-bg); color: var(--success); border: 1px solid var(--success-border); }
-    .temp-badge.warn { background: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger-border); }
-
-    /* Action Buttons */
-    .btn-group {
+    /* Remember Name Checkbox */
+    .remember-group {
       display: flex;
-      gap: 12px;
-      margin-top: 20px;
-      justify-content: flex-end;
+      align-items: center;
+      gap: 6px;
+      margin-top: 8px;
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .remember-group input[type="checkbox"] {
+      width: 15px;
+      height: 15px;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+    /* Collapsible Issues & Incident Box */
+    .accordion-toggle {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg-subtle);
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 10px 14px;
+      font-family: inherit;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-main);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-bottom: 12px;
+      text-align: left;
+    }
+
+    .accordion-toggle:hover {
+      background: #f1f5f9;
+      border-color: #94a3b8;
+    }
+
+    .accordion-body {
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      background: #ffffff;
+      margin-bottom: 12px;
+      display: none;
+    }
+
+    .accordion-body.open {
+      display: block;
+      animation: fadeIn 0.2s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Actions Buttons */
+    .btn-row {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 10px;
+      margin-top: 14px;
     }
 
     .btn {
-      padding: 12px 24px;
+      height: 46px;
       border-radius: var(--radius-md);
       font-family: inherit;
       font-weight: 700;
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       cursor: pointer;
       border: none;
-      transition: all 0.2s ease;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 6px;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+
+    .btn-secondary {
+      background: #ffffff;
+      color: var(--text-main);
+      border: 1.5px solid var(--border-color);
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-subtle);
+      border-color: #94a3b8;
     }
 
     .btn-primary {
       background: var(--primary);
-      color: white;
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
     }
 
     .btn-primary:hover {
@@ -397,52 +573,51 @@
       transform: translateY(-1px);
     }
 
-    .btn-secondary {
-      background: var(--bg-subtle);
-      color: var(--text-main);
-      border: 1.5px solid var(--border-color);
+    .btn-primary:disabled {
+      background: #93c5fd;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
     }
 
-    .btn-secondary:hover {
-      background: var(--border-color);
-    }
-
-    /* Data Table */
-    .table-wrapper {
+    /* Table Styles for History View */
+    .table-container {
       overflow-x: auto;
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-light);
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.86rem;
+      font-size: 0.8rem;
       text-align: left;
     }
 
     th {
       background: var(--bg-subtle);
-      color: var(--primary-dark);
+      color: var(--text-muted);
       font-weight: 800;
-      padding: 12px 14px;
-      border-bottom: 1.5px solid var(--border-color);
+      padding: 10px 10px;
+      border-bottom: 1px solid var(--border-color);
+      white-space: nowrap;
     }
 
     td {
-      padding: 12px 14px;
-      border-bottom: 1px solid var(--border-color);
+      padding: 10px 10px;
+      border-bottom: 1px solid var(--border-light);
+      white-space: nowrap;
     }
 
     tr:nth-child(even) td {
-      background: var(--bg-subtle);
+      background: #fafafa;
     }
 
     /* Modals */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(15, 23, 42, 0.6);
+      background: rgba(15, 23, 42, 0.65);
       backdrop-filter: blur(4px);
       display: flex;
       align-items: center;
@@ -450,7 +625,7 @@
       z-index: 1000;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.25s ease;
+      transition: opacity 0.2s ease;
       padding: 16px;
     }
 
@@ -461,21 +636,21 @@
 
     .modal-box {
       background: var(--bg-card);
-      padding: 24px;
+      padding: 20px;
       border-radius: var(--radius-lg);
-      max-width: 480px;
+      max-width: 440px;
       width: 100%;
       box-shadow: var(--shadow-lg);
-      border: 1px solid var(--border-color);
+      border: 1px solid var(--border-light);
       position: relative;
     }
 
     .close-x-btn {
       position: absolute;
-      top: 14px; right: 16px;
+      top: 12px; right: 14px;
       background: transparent;
       border: none;
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       font-weight: 700;
       color: var(--text-muted);
       cursor: pointer;
@@ -486,196 +661,195 @@
 </head>
 <body>
 
-  <!-- App Header -->
+  <!-- Top App Header -->
   <header class="app-header">
     <div class="header-container">
-      <div>
-        <span class="brand-badge">Sistem Pemantauan Rangkaian Sejuk</span>
-        <h1 class="brand-title">❄️ Rekod Suhu Peti Sejuk</h1>
-        <div class="brand-subtitle">Unit Farmasi Logistik, PKD Sik</div>
-      </div>
+      <div class="brand-badge">PKD SIK • UNIT FARMASI LOGISTIK</div>
+      <h1 class="brand-title">❄️ Rekod Suhu Peti Sejuk</h1>
 
       <div class="header-controls">
         <button class="icon-btn" onclick="exportCSV()" title="Muat Turun Data CSV">
-          📥 Eksport CSV
+          📊 CSV
         </button>
-        <button class="icon-btn" onclick="openAdminSettings()" title="Tetapan Web App URL & Security">
-          ⚙️ Tetapan Server
+        <button class="icon-btn" onclick="openAdminSettings()" title="Tetapan Web App URL">
+          ⚙️
         </button>
       </div>
     </div>
   </header>
 
-  <!-- Main Application Wrapper -->
+  <!-- Main Content Container -->
   <main class="main-wrapper">
 
-    <!-- Refrigerator Navigation Tabs -->
-    <nav class="location-tabs-card">
-      <button class="tab-btn active" data-fridge="PETI_SEJUK_1" onclick="switchFridge('PETI_SEJUK_1')">
-        <span>🧊 Peti Sejuk 1</span>
-        <span class="tab-sub">Peti Sejuk Utama</span>
+    <!-- Refrigerator Selector Cards -->
+    <div class="fridge-tabs-grid">
+      <button class="tab-card active" data-fridge="PETI_SEJUK_1" onclick="switchFridge('PETI_SEJUK_1')">
+        <span class="tab-icon">🧊</span>
+        <span class="tab-title">Peti Sejuk 1</span>
+        <span class="tab-sub">2°C - 8°C</span>
       </button>
-      <button class="tab-btn" data-fridge="PETI_SEJUK_2" onclick="switchFridge('PETI_SEJUK_2')">
-        <span>💉 Peti Sejuk 2</span>
-        <span class="tab-sub">Stok Vaksin / Ubat</span>
+      <button class="tab-card" data-fridge="PETI_SEJUK_2" onclick="switchFridge('PETI_SEJUK_2')">
+        <span class="tab-icon">💉</span>
+        <span class="tab-title">Peti Sejuk 2</span>
+        <span class="tab-sub">2°C - 8°C</span>
       </button>
-      <button class="tab-btn" data-fridge="PETI_SEJUK_3" onclick="switchFridge('PETI_SEJUK_3')">
-        <span>📦 Peti Sejuk 3</span>
-        <span class="tab-sub">Stok Cadangan</span>
+      <button class="tab-card" data-fridge="PETI_SEJUK_3" onclick="switchFridge('PETI_SEJUK_3')">
+        <span class="tab-icon">📦</span>
+        <span class="tab-title">Peti Sejuk 3</span>
+        <span class="tab-sub">2°C - 8°C</span>
       </button>
-      <button class="tab-btn" data-fridge="PETI_SEJUK_4" onclick="switchFridge('PETI_SEJUK_4')">
-        <span>❄️ Peti Sejuk 4</span>
-        <span class="tab-sub">Bilik Sejuk</span>
+      <button class="tab-card" data-fridge="PETI_SEJUK_4" onclick="switchFridge('PETI_SEJUK_4')">
+        <span class="tab-icon">❄️</span>
+        <span class="tab-title">Peti Sejuk 4</span>
+        <span class="tab-sub">2°C - 8°C</span>
       </button>
-    </nav>
+    </div>
 
-    <!-- Main Temperature Logging Form Card -->
-    <section class="card">
-      <div class="card-header">
-        <h2 class="card-title">
-          📝 Borang Rekod Suhu: <span id="activeFridgeTitle">Peti Sejuk 1 (Utama)</span>
-        </h2>
-        <span id="fridgeRangeBadge" class="range-pill">Julat Rasmi: +2.0°C ke +8.0°C</span>
-      </div>
+    <!-- Subheader Active Status Strip -->
+    <div class="status-strip">
+      <div id="activeFridgeRangeText">Peti Sejuk 1 (Utama): +2.0°C ke +8.0°C</div>
+      <div id="targetRowText" class="strip-target">Target: Baris 2 (AM)</div>
+    </div>
 
+    <!-- Segmented Navigation (Borang / Sejarah / Trend) -->
+    <div class="view-segmented-nav">
+      <button class="view-btn active" id="btnViewForm" onclick="switchView('form')">
+        📝 Borang Input
+      </button>
+      <button class="view-btn" id="btnViewHistory" onclick="switchView('history')">
+        📋 Sejarah Rekod
+      </button>
+      <button class="view-btn" id="btnViewChart" onclick="switchView('chart')">
+        📊 Trend Chart
+      </button>
+    </div>
+
+    <!-- 1. VIEW: BORANG INPUT -->
+    <section id="viewForm" class="content-card">
       <form id="tempForm">
 
-        <!-- Section 1: Tarikh & Waktu -->
-        <div class="section-group">
-          <div class="section-title">
-            <span>📅</span> 1. Tarikh & Sesi Log (AM / PM)
-          </div>
-          <div class="grid-2">
-            <div>
-              <label for="dateInput">Tarikh Log</label>
-              <input type="date" id="dateInput" name="date" required />
+        <!-- Tarikh & Sesi Log -->
+        <div class="form-block">
+          <div class="form-grid-2">
+            <div class="field-group">
+              <label class="field-label" for="dateInput">📅 Tarikh Log</label>
+              <input type="date" id="dateInput" name="date" class="input-control" required />
             </div>
 
-            <div>
-              <label>Sesi Waktu Log</label>
+            <div class="field-group">
+              <label class="field-label">⏰ Sesi Log</label>
               <div class="slot-pill-group">
                 <div class="slot-pill">
                   <input type="radio" id="slotAM" name="slot" value="AM" checked />
-                  <label for="slotAM" class="slot-label">
-                    <span>AM (Pagi)</span>
-                    <span class="slot-time-range">07:00 - 13:00</span>
-                  </label>
+                  <label for="slotAM" class="slot-label">AM (Pagi)</label>
                 </div>
                 <div class="slot-pill">
                   <input type="radio" id="slotPM" name="slot" value="PM" />
-                  <label for="slotPM" class="slot-label">
-                    <span>PM (Petang)</span>
-                    <span class="slot-time-range">14:00 - 18:00</span>
-                  </label>
+                  <label for="slotPM" class="slot-label">PM (Petang)</label>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Dynamic Status Badges -->
-          <div class="status-pill-container">
-            <div id="timeWindowPill" class="info-pill in-window">
-              🟢 Dalam Waktu Sesi AM
+          <!-- Session Window Indicator -->
+          <div id="timeWindowPill" class="session-info-badge">
+            🟢 Dalam Sesi AM Rasmi (07:00 AM - 01:00 PM)
+          </div>
+        </div>
+
+        <!-- Bacaan Suhu (°C) -->
+        <div class="form-block">
+          <div class="form-block-header">
+            <span>📉</span> BACAAN SUHU (°C)
+          </div>
+          <div class="temp-grid-3">
+            <div class="temp-col">
+              <span class="temp-label">MIN (°C)</span>
+              <input type="number" step="0.1" id="min" name="min" class="temp-input" placeholder="4.0" required />
+              <div id="minBadge" class="temp-alert-badge hidden"></div>
             </div>
-            <div id="targetRowPill" class="info-pill row-pill">
-              📊 Target Google Sheets: Baris 2 (AM)
+
+            <div class="temp-col">
+              <span class="temp-label">SEMASA (°C)</span>
+              <input type="number" step="0.1" id="semasa" name="semasa" class="temp-input highlight" placeholder="4.5" required />
+              <div id="semasaBadge" class="temp-alert-badge hidden"></div>
+            </div>
+
+            <div class="temp-col">
+              <span class="temp-label">MAX (°C)</span>
+              <input type="number" step="0.1" id="max" name="max" class="temp-input" placeholder="5.2" required />
+              <div id="maxBadge" class="temp-alert-badge hidden"></div>
             </div>
           </div>
         </div>
 
-        <!-- Section 2: Bacaan Suhu -->
-        <div class="section-group">
-          <div class="section-title">
-            <span>🌡️</span> 2. Bacaan Suhu (°C)
+        <!-- Nama Pegawai / Pencatat -->
+        <div class="form-block">
+          <div class="field-group">
+            <label class="field-label" for="namaInput">👤 Nama Pegawai / Pencatat</label>
+            <input type="text" id="namaInput" name="nama" class="input-control" placeholder="Contoh: Aisyah / Fathi" required />
           </div>
-          <div class="grid-3">
-            <div>
-              <label for="min">Suhu Minimum (°C)</label>
-              <input type="number" step="0.1" id="min" name="min" placeholder="Contoh: 3.5" required />
-              <div id="minBadge" class="temp-badge hidden"></div>
-            </div>
-
-            <div>
-              <label for="semasa">Suhu Semasa (°C)</label>
-              <input type="number" step="0.1" id="semasa" name="semasa" placeholder="Contoh: 4.2" required />
-              <div id="semasaBadge" class="temp-badge hidden"></div>
-            </div>
-
-            <div>
-              <label for="max">Suhu Maksimum (°C)</label>
-              <input type="number" step="0.1" id="max" name="max" placeholder="Contoh: 5.8" required />
-              <div id="maxBadge" class="temp-badge hidden"></div>
-            </div>
-          </div>
+          <label class="remember-group">
+            <input type="checkbox" id="rememberNameCheckbox" checked />
+            <span>Simpan nama ini untuk tugasan seterusnya</span>
+          </label>
         </div>
 
-        <!-- Section 3: Perkara & Nama Pegawai -->
-        <div class="section-group">
-          <div class="section-title">
-            <span>📋</span> 3. Perkara / Status & Nama Pegawai
-          </div>
-          <div class="grid-2">
-            <div>
-              <label for="perkaraSelect">Pilih Perkara Jika Ada Masalah (Opsional)</label>
-              <select id="perkaraSelect" name="perkara">
-                <option value="">-- Normal / Tiada Isu --</option>
-                <option value="A">A - TIADA PRODUK/BAHAN RANGKAIAN SEJUK DISIMPAN</option>
-                <option value="B">B - TIDAK CUKUP BEKALAN ELEKTRIK</option>
-                <option value="C">C - PETI SEJUK TIDAK BERFUNGSI DENGAN BETUL</option>
-                <option value="D">D - PEMBANTU TEKNIK DIPANGGIL UNTUK PENAMBAHBAIKAN</option>
-                <option value="E">E - PETI SEJUK DALAM PEMBAIKAN</option>
-              </select>
-            </div>
+        <!-- Collapsible Issues & Incident Log Accordion -->
+        <button type="button" class="accordion-toggle" onclick="toggleAccordion()">
+          <span>⚠️ Isu / Catatan Suhu Luar Julat (Opsional)</span>
+          <span id="accordionArrow">▼</span>
+        </button>
 
-            <div>
-              <label for="namaInput">Nama Pegawai / Pencatat</label>
-              <input type="text" id="namaInput" name="nama" placeholder="Contoh: Pegawai Farmasi Logistik" required />
-            </div>
-          </div>
-        </div>
-
-        <!-- Section 4: Incident Log (CATATAN SUHU LUAR JULAT) -->
-        <div class="section-group">
-          <div class="section-title">
-            <span>🚨</span> 4. Catatan Suhu Luar Julat (Opsional)
+        <div id="accordionBody" class="accordion-body">
+          <div class="field-group" style="margin-bottom: 12px;">
+            <label class="field-label" for="perkaraSelect">Pilih Perkara Jika Ada Masalah</label>
+            <select id="perkaraSelect" name="perkara" class="input-control">
+              <option value="">-- Normal / Tiada Isu --</option>
+              <option value="A">A - TIADA PRODUK/BAHAN RANGKAIAN SEJUK DISIMPAN</option>
+              <option value="B">B - TIDAK CUKUP BEKALAN ELEKTRIK</option>
+              <option value="C">C - PETI SEJUK TIDAK BERFUNGSI DENGAN BETUL</option>
+              <option value="D">D - PEMBANTU TEKNIK DIPANGGIL UNTUK PENAMBAHBAIKAN</option>
+              <option value="E">E - PETI SEJUK DALAM PEMBAIKAN</option>
+            </select>
           </div>
 
-          <div style="display:flex; gap:20px; align-items:center;">
-            <label style="margin:0;">Aktifkan Incident Log?</label>
-            <label style="cursor:pointer; font-weight:normal;">
-              <input type="radio" id="incidentNo" name="incidentEnable" value="no" checked onclick="toggleIncidentForm(false)"> Tidak
+          <div style="display: flex; gap: 14px; align-items: center; margin-bottom: 10px;">
+            <span style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted);">Aktifkan Incident Log?</span>
+            <label style="font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+              <input type="radio" id="incidentNo" name="incidentEnable" value="no" checked onclick="toggleIncidentFields(false)"> Tidak
             </label>
-            <label style="cursor:pointer; font-weight:normal;">
-              <input type="radio" id="incidentYes" name="incidentEnable" value="yes" onclick="toggleIncidentForm(true)"> Ya
+            <label style="font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+              <input type="radio" id="incidentYes" name="incidentEnable" value="yes" onclick="toggleIncidentFields(true)"> Ya
             </label>
           </div>
 
-          <div id="incidentFieldsBox" class="hidden" style="margin-top:14px; padding-top:14px; border-top:1.5px dashed var(--border-color);">
-            <div class="grid-2" style="margin-bottom:12px;">
-              <div>
-                <label for="incidentDate">Tarikh Kejadian</label>
-                <input type="date" id="incidentDate" />
+          <div id="incidentFieldsBox" class="hidden" style="border-top: 1px dashed var(--border-color); padding-top: 10px;">
+            <div class="form-grid-2" style="margin-bottom: 10px;">
+              <div class="field-group">
+                <label class="field-label" for="incidentDate">Tarikh Kejadian</label>
+                <input type="date" id="incidentDate" class="input-control" />
               </div>
-              <div>
-                <label for="incidentTime">Masa Kejadian</label>
-                <input type="time" id="incidentTime" />
+              <div class="field-group">
+                <label class="field-label" for="incidentTime">Masa Kejadian</label>
+                <input type="time" id="incidentTime" class="input-control" />
               </div>
             </div>
 
-            <div style="margin-bottom:12px;">
-              <label for="incidentOfficer">Nama Pegawai Bertanggungjawab</label>
-              <input type="text" id="incidentOfficer" placeholder="Nama Pegawai Penjelas" />
+            <div class="field-group" style="margin-bottom: 10px;">
+              <label class="field-label" for="incidentOfficer">Nama Pegawai Bertanggungjawab</label>
+              <input type="text" id="incidentOfficer" class="input-control" placeholder="Nama Pegawai Penjelas" />
             </div>
 
-            <div>
-              <label for="incidentNote">Penjelasan / Tindakan Pembetulan Taken</label>
-              <textarea id="incidentNote" rows="3" placeholder="Sila nyatakan tindakan susulan (contoh: pemindahan stok ubat, pengesahan juruteknik)..."></textarea>
+            <div class="field-group">
+              <label class="field-label" for="incidentNote">Penjelasan / Tindakan Pembetulan</label>
+              <textarea id="incidentNote" class="input-control" style="height: 70px; padding-top: 8px;" placeholder="Sila nyatakan tindakan susulan yang diambil..."></textarea>
             </div>
           </div>
         </div>
 
-        <!-- Submit Buttons -->
-        <div class="btn-group">
+        <!-- Action Buttons -->
+        <div class="btn-row">
           <button type="button" class="btn btn-secondary" onclick="resetForm()">Semula</button>
           <button type="submit" class="btn btn-primary" id="submitBtn">🚀 Hantar Rekod Suhu</button>
         </div>
@@ -683,23 +857,15 @@
       </form>
     </section>
 
-    <!-- Temperature Analytics Chart Card -->
-    <section class="card">
-      <div class="card-header">
-        <h3 class="card-title">📈 Trend Bacaan Suhu Peti Sejuk</h3>
+    <!-- 2. VIEW: SEJARAH REKOD -->
+    <section id="viewHistory" class="content-card hidden">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <h3 style="font-size: 0.95rem; font-weight: 800; color: var(--text-main);">📋 Sejarah Rekod Suhu</h3>
+        <button class="icon-btn" onclick="exportCSV()" style="background: #2563eb; color: #fff; padding: 4px 8px; font-size: 0.72rem;">
+          📥 Download CSV
+        </button>
       </div>
-      <div style="height: 280px; position: relative;">
-        <canvas id="tempChart"></canvas>
-      </div>
-    </section>
-
-    <!-- Recent Logs Table Card -->
-    <section class="card">
-      <div class="card-header">
-        <h3 class="card-title">📋 Rekod Suhu Terbaru</h3>
-        <button class="btn btn-secondary" onclick="exportCSV()" style="padding:6px 12px; font-size:0.8rem;">📥 Download CSV</button>
-      </div>
-      <div class="table-wrapper">
+      <div class="table-container">
         <table>
           <thead>
             <tr>
@@ -709,41 +875,51 @@
               <th>Semasa</th>
               <th>Max</th>
               <th>Perkara</th>
-              <th>Pegawai</th>
-              <th>Status Sync</th>
+              <th>Pencatat</th>
+              <th>Sync</th>
             </tr>
           </thead>
           <tbody id="logTableBody">
-            <tr><td colspan="8" style="text-align:center; color:var(--text-muted); padding:20px;">Memuatkan data...</td></tr>
+            <tr><td colspan="8" style="text-align:center; color:var(--text-muted); padding:16px;">Memuatkan data...</td></tr>
           </tbody>
         </table>
       </div>
     </section>
 
+    <!-- 3. VIEW: TREND CHART -->
+    <section id="viewChart" class="content-card hidden">
+      <h3 id="chartTitle" style="font-size: 0.95rem; font-weight: 800; color: var(--text-main); margin-bottom: 12px;">
+        📈 Trend Bacaan Suhu
+      </h3>
+      <div style="height: 260px; position: relative;">
+        <canvas id="tempChart"></canvas>
+      </div>
+    </section>
+
   </main>
 
-  <!-- Admin & Web App URL Settings Modal -->
+  <!-- Admin & Web App Settings Modal -->
   <div id="settingsModal" class="modal-overlay">
     <div class="modal-box">
-      <button type="button" class="close-x-btn" onclick="closeSettings()" title="Tutup">&times;</button>
-      <h3 style="color:var(--primary-dark); margin-bottom:8px;">⚙️ Tetapan Server & Security</h3>
-      <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:14px;">
+      <button type="button" class="close-x-btn" onclick="closeSettings()">&times;</button>
+      <h3 style="font-size: 1.05rem; font-weight: 800; color: var(--text-main); margin-bottom: 6px;">⚙️ Tetapan Server & Security</h3>
+      <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px;">
         Masukkan PIN Admin untuk mengemas kini Google Apps Script Web App URL.
       </p>
 
       <div id="pinBox">
-        <label for="adminPin">PIN Security Admin</label>
-        <input type="password" id="adminPin" placeholder="Masukkan PIN Rahsia Admin" style="margin-bottom:12px;" />
-        <div class="btn-group">
+        <label class="field-label" for="adminPin">PIN Security Admin</label>
+        <input type="password" id="adminPin" class="input-control" placeholder="Masukkan PIN Rahsia Admin" style="margin-bottom: 12px;" />
+        <div class="btn-row">
           <button type="button" class="btn btn-secondary" onclick="closeSettings()">Batal</button>
           <button type="button" class="btn btn-primary" onclick="unlockAdmin()">Buka Tetapan</button>
         </div>
       </div>
 
       <div id="urlBox" class="hidden">
-        <label for="webAppUrl">Google Apps Script Web App URL</label>
-        <input type="url" id="webAppUrl" placeholder="https://script.google.com/macros/s/.../exec" style="margin-bottom:14px;" />
-        <div class="btn-group">
+        <label class="field-label" for="webAppUrl">Google Apps Script Web App URL</label>
+        <input type="url" id="webAppUrl" class="input-control" placeholder="https://script.google.com/macros/s/.../exec" style="margin-bottom: 14px;" />
+        <div class="btn-row">
           <button type="button" class="btn btn-secondary" onclick="closeSettings()">Batal</button>
           <button type="button" class="btn btn-primary" onclick="saveSettings()">Simpan URL</button>
         </div>
@@ -751,14 +927,14 @@
     </div>
   </div>
 
-  <!-- Overwrite Confirmation Modal -->
+  <!-- Overwrite Modal -->
   <div id="overwriteModal" class="modal-overlay">
     <div class="modal-box">
-      <h3 style="color:var(--warning); margin-bottom:8px;">⚠️ Rekod Sudah Wujud!</h3>
-      <p id="overwriteDataText" style="font-size:0.9rem; color:var(--text-main); margin-bottom:16px;">
-        Data untuk tarikh ini telah ada di Google Sheet. Adakah anda ingin mengemas kini (overwrite)?
+      <h3 style="color: var(--warning); font-size: 1.05rem; font-weight: 800; margin-bottom: 6px;">⚠️ Rekod Sudah Wujud!</h3>
+      <p id="overwriteDataText" style="font-size: 0.85rem; color: var(--text-main); margin-bottom: 14px;">
+        Data untuk tarikh ini telah wujud di Google Sheet. Adakah anda ingin mengemas kini (overwrite)?
       </p>
-      <div class="btn-group">
+      <div class="btn-row">
         <button type="button" class="btn btn-secondary" onclick="closeOverwriteModal()">Batal</button>
         <button type="button" class="btn btn-primary" id="confirmOverwriteBtn">Ya, Overwrite</button>
       </div>
@@ -767,9 +943,9 @@
 
   <!-- Success Notification Modal -->
   <div id="successModal" class="modal-overlay">
-    <div class="modal-box" style="text-align:center;">
-      <h2 style="color:var(--success); margin-bottom:8px;">✅ Berjaya!</h2>
-      <p id="successText" style="font-size:0.9rem; color:var(--text-main);">Rekod suhu telah berjaya disimpan.</p>
+    <div class="modal-box" style="text-align: center;">
+      <h2 style="color: var(--success); font-size: 1.25rem; font-weight: 800; margin-bottom: 6px;">✅ Berjaya!</h2>
+      <p id="successText" style="font-size: 0.85rem; color: var(--text-main);">Rekod suhu telah berjaya disimpan.</p>
     </div>
   </div>
 
@@ -787,6 +963,7 @@
     };
 
     let currentFridge = 'PETI_SEJUK_1';
+    let currentView = 'form';
     let logs = JSON.parse(localStorage.getItem('farmasi_logistik_temp_logs') || '[]');
     let webAppUrl = localStorage.getItem('farmasi_logistik_web_app_url') || CONFIG.defaultUrl;
     let tempChart = null;
@@ -797,6 +974,12 @@
 
     function initApp() {
       document.getElementById('webAppUrl').value = webAppUrl;
+
+      // Restore saved staff name if available
+      const savedStaffName = localStorage.getItem('farmasi_logistik_staff_name');
+      if (savedStaffName) {
+        document.getElementById('namaInput').value = savedStaffName;
+      }
 
       const now = new Date();
       const isoDate = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
@@ -831,20 +1014,35 @@
       initChart();
     }
 
+    // View Switching Logic (Borang / Sejarah / Trend)
+    function switchView(viewName) {
+      currentView = viewName;
+
+      document.getElementById('btnViewForm').classList.toggle('active', viewName === 'form');
+      document.getElementById('btnViewHistory').classList.toggle('active', viewName === 'history');
+      document.getElementById('btnViewChart').classList.toggle('active', viewName === 'chart');
+
+      document.getElementById('viewForm').classList.toggle('hidden', viewName !== 'form');
+      document.getElementById('viewHistory').classList.toggle('hidden', viewName !== 'history');
+      document.getElementById('viewChart').classList.toggle('hidden', viewName !== 'chart');
+
+      if (viewName === 'chart') {
+        setTimeout(() => updateChart(), 50);
+      } else if (viewName === 'history') {
+        renderLogs();
+      }
+    }
+
     function switchFridge(fridgeKey) {
       currentFridge = fridgeKey;
 
-      document.querySelectorAll('.tab-btn').forEach(btn => {
-        if (btn.getAttribute('data-fridge') === fridgeKey) {
-          btn.classList.add('active');
-        } else {
-          btn.classList.remove('active');
-        }
+      document.querySelectorAll('.tab-card').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-fridge') === fridgeKey);
       });
 
       const fridgeInfo = CONFIG.fridges[fridgeKey] || { name: fridgeKey, min: 2, max: 8 };
-      document.getElementById('activeFridgeTitle').textContent = fridgeInfo.name;
-      document.getElementById('fridgeRangeBadge').textContent = `Julat Rasmi: +${fridgeInfo.min.toFixed(1)}°C ke +${fridgeInfo.max.toFixed(1)}°C`;
+      document.getElementById('activeFridgeRangeText').textContent = 
+        `${fridgeInfo.name}: +${fridgeInfo.min.toFixed(1)}°C ke +${fridgeInfo.max.toFixed(1)}°C`;
 
       ['min', 'semasa', 'max'].forEach(id => validateTemperatureInput(id));
 
@@ -856,18 +1054,18 @@
       const dateStr = document.getElementById('dateInput').value;
       const slotEl = document.querySelector('input[name="slot"]:checked');
       const slot = slotEl ? slotEl.value : 'AM';
-      const rowBadge = document.getElementById('targetRowPill');
+      const rowBadge = document.getElementById('targetRowText');
 
       if (!dateStr) {
-        rowBadge.innerHTML = '📊 Baris Google Sheets: -';
+        rowBadge.textContent = 'Target: Baris -';
         return;
       }
 
       const targetRow = calculateTargetRow(dateStr, slot);
       if (targetRow > 0) {
-        rowBadge.innerHTML = `📊 Target Google Sheets: <b>Baris ${targetRow}</b> (${slot})`;
+        rowBadge.textContent = `Target: Baris ${targetRow} (${slot})`;
       } else {
-        rowBadge.innerHTML = `⚠️ Tarikh Luar Julat (2025 - 2036)`;
+        rowBadge.textContent = `⚠️ Tarikh Luar Julat (2025 - 2036)`;
       }
     }
 
@@ -892,19 +1090,19 @@
 
       if (slot === 'AM') {
         if (hour >= 7 && hour < 13) {
-          windowPill.className = 'info-pill in-window';
-          windowPill.innerHTML = '🟢 Dalam Sesi AM Rasmi (07:00 AM - 01:00 PM)';
+          windowPill.className = 'session-info-badge in-window';
+          windowPill.textContent = '🟢 Dalam Sesi AM Rasmi (07:00 AM - 01:00 PM)';
         } else {
-          windowPill.className = 'info-pill out-window';
-          windowPill.innerHTML = '⚠️ Luar Waktu AM Rasmi (07:00 AM - 01:00 PM)';
+          windowPill.className = 'session-info-badge out-window';
+          windowPill.textContent = '⚠️ Luar Waktu AM Rasmi (07:00 AM - 01:00 PM)';
         }
       } else {
         if (hour >= 14 && hour <= 18) {
-          windowPill.className = 'info-pill in-window';
-          windowPill.innerHTML = '🟢 Dalam Sesi PM Rasmi (02:00 PM - 06:00 PM)';
+          windowPill.className = 'session-info-badge in-window';
+          windowPill.textContent = '🟢 Dalam Sesi PM Rasmi (02:00 PM - 06:00 PM)';
         } else {
-          windowPill.className = 'info-pill out-window';
-          windowPill.innerHTML = '⚠️ Luar Waktu PM Rasmi (02:00 PM - 06:00 PM)';
+          windowPill.className = 'session-info-badge out-window';
+          windowPill.textContent = '⚠️ Luar Waktu PM Rasmi (02:00 PM - 06:00 PM)';
         }
       }
     }
@@ -915,24 +1113,38 @@
       if (!badge) return;
 
       if (isNaN(val)) {
-        badge.className = 'temp-badge hidden';
+        badge.className = 'temp-alert-badge hidden';
         return;
       }
 
       const cfg = CONFIG.fridges[currentFridge] || { min: 2, max: 8 };
 
       if (val >= cfg.min && val <= cfg.max) {
-        badge.className = 'temp-badge ok';
+        badge.className = 'temp-alert-badge ok';
         badge.textContent = `✅ Selamat (${val}°C)`;
       } else {
-        badge.className = 'temp-badge warn';
-        badge.textContent = `🚨 Luar Julat Selamat (+${cfg.min}°C ke +${cfg.max}°C)!`;
+        badge.className = 'temp-alert-badge warn';
+        badge.textContent = `🚨 Luar Julat (+${cfg.min} ke +${cfg.max}°C)`;
         document.getElementById('incidentYes').checked = true;
-        toggleIncidentForm(true);
+        toggleIncidentFields(true);
+        openAccordion();
       }
     }
 
-    function toggleIncidentForm(show) {
+    function toggleAccordion() {
+      const body = document.getElementById('accordionBody');
+      const arrow = document.getElementById('accordionArrow');
+      const isOpen = body.classList.contains('open');
+      body.classList.toggle('open', !isOpen);
+      arrow.textContent = !isOpen ? '▲' : '▼';
+    }
+
+    function openAccordion() {
+      document.getElementById('accordionBody').classList.add('open');
+      document.getElementById('accordionArrow').textContent = '▲';
+    }
+
+    function toggleIncidentFields(show) {
       const box = document.getElementById('incidentFieldsBox');
       if (box) box.classList.toggle('hidden', !show);
     }
@@ -942,6 +1154,11 @@
       const fd = new FormData(e.target);
       const submitBtn = document.getElementById('submitBtn');
 
+      const nama = fd.get('nama');
+      if (document.getElementById('rememberNameCheckbox').checked && nama) {
+        localStorage.setItem('farmasi_logistik_staff_name', nama.trim());
+      }
+
       const payload = {
         lokasi: currentFridge,
         date: fd.get('date'),
@@ -950,7 +1167,7 @@
         semasa: fd.get('semasa'),
         max: fd.get('max'),
         perkara: fd.get('perkara'),
-        nama: fd.get('nama')
+        nama: nama
       };
 
       if (document.getElementById('incidentYes').checked) {
@@ -1002,7 +1219,7 @@
       submitBtn.textContent = '🚀 Hantar Rekod Suhu';
 
       showSuccessModal(success);
-      resetForm();
+      resetFormInputs();
       renderLogs();
       updateChart();
     });
@@ -1011,7 +1228,7 @@
       const modal = document.getElementById('overwriteModal');
       const fridgeName = (CONFIG.fridges[payload.lokasi] || {}).name || payload.lokasi;
       document.getElementById('overwriteDataText').textContent = 
-        `Rekod bagi ${fridgeName} pada ${payload.date} (${payload.slot}) sudah wujud pada Baris ${row}. Adakah anda pasti untuk mengemas kini (overwrite)?`;
+        `Rekod bagi ${fridgeName} pada ${payload.date} (${payload.slot}) telah wujud pada Baris ${row}. Adakah anda pasti untuk mengemas kini (overwrite)?`;
       modal.classList.add('active');
 
       document.getElementById('confirmOverwriteBtn').onclick = () => {
@@ -1031,28 +1248,39 @@
 
       if (filtered.length === 0) {
         const fridgeName = (CONFIG.fridges[currentFridge] || {}).name || currentFridge;
-        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:var(--text-muted); padding:20px;">Tiada rekod disimpan untuk ${fridgeName} lagi.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:var(--text-muted); padding:16px;">Tiada rekod disimpan untuk ${fridgeName} lagi.</td></tr>`;
         return;
       }
 
       tbody.innerHTML = filtered.slice(0, 15).map(r => `
         <tr>
           <td><b>${r.date}</b></td>
-          <td><span class="range-pill">${r.slot}</span></td>
+          <td><span style="font-size:0.75rem; font-weight:700; background:#e0f2fe; color:#0369a1; padding:2px 6px; border-radius:4px;">${r.slot}</span></td>
           <td>${r.min !== '' ? r.min + ' °C' : '-'}</td>
           <td><b>${r.semasa !== '' ? r.semasa + ' °C' : '-'}</b></td>
           <td>${r.max !== '' ? r.max + ' °C' : '-'}</td>
           <td>${r.perkara || '-'}</td>
           <td>${r.nama || '-'}</td>
-          <td>${r.synced ? '<span style="color:var(--success);">✅ Synced</span>' : '<span style="color:var(--warning);">💾 Offline</span>'}</td>
+          <td>${r.synced ? '<span style="color:var(--success); font-weight:700;">✅ Sync</span>' : '<span style="color:var(--warning); font-weight:700;">💾 Offline</span>'}</td>
         </tr>
       `).join('');
     }
 
-    function resetForm() {
-      document.getElementById('tempForm').reset();
+    function resetFormInputs() {
+      document.getElementById('min').value = '';
+      document.getElementById('semasa').value = '';
+      document.getElementById('max').value = '';
+      document.getElementById('perkaraSelect').value = '';
       document.getElementById('incidentNo').checked = true;
-      toggleIncidentForm(false);
+      toggleIncidentFields(false);
+      ['minBadge', 'semasaBadge', 'maxBadge'].forEach(id => {
+        const badge = document.getElementById(id);
+        if (badge) badge.className = 'temp-alert-badge hidden';
+      });
+    }
+
+    function resetForm() {
+      resetFormInputs();
       initApp();
     }
 
@@ -1087,10 +1315,10 @@
     function showSuccessModal(isSynced) {
       const modal = document.getElementById('successModal');
       document.getElementById('successText').textContent = isSynced
-        ? 'Rekod suhu telah berjaya disinkronkan ke Google Spreadsheet (Farmasi Logistik)!'
+        ? 'Rekod suhu telah berjaya dihantar ke Google Spreadsheet!'
         : 'Rekod telah disimpan secara tempatan (Local Storage).';
       modal.classList.add('active');
-      setTimeout(() => modal.classList.remove('active'), 2200);
+      setTimeout(() => modal.classList.remove('active'), 2000);
     }
 
     function exportCSV() {
@@ -1131,20 +1359,21 @@
         data: {
           labels: [],
           datasets: [
-            { label: 'Suhu Min (°C)', borderColor: '#0284c7', backgroundColor: 'rgba(2, 132, 199, 0.1)', data: [], fill: false, tension: 0.3 },
-            { label: 'Suhu Semasa (°C)', borderColor: '#2563eb', backgroundColor: 'rgba(37, 99, 235, 0.2)', data: [], fill: true, tension: 0.3 },
-            { label: 'Suhu Max (°C)', borderColor: '#dc2626', backgroundColor: 'rgba(220, 38, 38, 0.1)', data: [], fill: false, tension: 0.3 }
+            { label: 'Min (°C)', borderColor: '#0284c7', backgroundColor: 'rgba(2, 132, 199, 0.1)', data: [], fill: false, tension: 0.3 },
+            { label: 'Semasa (°C)', borderColor: '#2563eb', backgroundColor: 'rgba(37, 99, 235, 0.2)', data: [], fill: true, tension: 0.3 },
+            { label: 'Max (°C)', borderColor: '#dc2626', backgroundColor: 'rgba(220, 38, 38, 0.1)', data: [], fill: false, tension: 0.3 }
           ]
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
-            legend: { position: 'top' },
-            title: { display: true, text: 'Trend Bacaan Suhu' }
+            legend: { position: 'top', labels: { boxWidth: 12, font: { size: 11, family: 'Plus Jakarta Sans' } } },
+            title: { display: false }
           },
           scales: {
-            y: { title: { display: true, text: 'Suhu (°C)' } }
+            y: { ticks: { font: { size: 10 } } },
+            x: { ticks: { font: { size: 10 } } }
           }
         }
       });
@@ -1156,13 +1385,13 @@
       if (!tempChart) return;
       const filtered = logs.filter(l => l.lokasi === currentFridge).slice(0, 10).reverse();
 
-      tempChart.data.labels = filtered.map(f => `${f.date} (${f.slot})`);
+      tempChart.data.labels = filtered.map(f => `${f.date.slice(5)} (${f.slot})`);
       tempChart.data.datasets[0].data = filtered.map(f => parseFloat(f.min) || null);
       tempChart.data.datasets[1].data = filtered.map(f => parseFloat(f.semasa) || null);
       tempChart.data.datasets[2].data = filtered.map(f => parseFloat(f.max) || null);
 
       const fridgeName = (CONFIG.fridges[currentFridge] || {}).name || currentFridge;
-      tempChart.options.plugins.title.text = `Trend Bacaan Suhu — ${fridgeName}`;
+      document.getElementById('chartTitle').textContent = `📈 Trend Suhu — ${fridgeName}`;
       tempChart.update();
     }
   </script>
