@@ -1137,10 +1137,9 @@
       if (box) box.classList.toggle('hidden', !show);
     }
 
-    document.getElementById('tempForm').addEventListener('submit', async (e) => {
+    document.getElementById('tempForm').addEventListener('submit', (e) => {
       e.preventDefault();
       const fd = new FormData(e.target);
-      const submitBtn = document.getElementById('submitBtn');
 
       const nama = fd.get('nama');
       if (document.getElementById('rememberNameCheckbox').checked && nama) {
@@ -1155,7 +1154,8 @@
         semasa: fd.get('semasa'),
         max: fd.get('max'),
         perkara: fd.get('perkara'),
-        nama: nama
+        nama: nama,
+        overwrite: false
       };
 
       if (document.getElementById('incidentYes').checked) {
@@ -1168,6 +1168,11 @@
         };
       }
 
+      sendRecord(payload);
+    });
+
+    async function sendRecord(payload) {
+      const submitBtn = document.getElementById('submitBtn');
       submitBtn.disabled = true;
       submitBtn.textContent = 'Menghantar...';
 
@@ -1189,10 +1194,19 @@
             submitBtn.textContent = '🚀 Hantar Rekod Suhu';
             showOverwriteModal(payload, responseData.row);
             return;
+          } else if (!responseData.ok) {
+            alert('Ralat Google Sheet: ' + (responseData.error || 'Gagal menyimpan data'));
+            submitBtn.disabled = false;
+            submitBtn.textContent = '🚀 Hantar Rekod Suhu';
+            return;
           }
         } catch (err) {
           console.warn('Network / Web App error, saving locally:', err);
         }
+      }
+
+      if (payload.overwrite) {
+        logs = logs.filter(l => !(l.lokasi === payload.lokasi && l.date === payload.date && l.slot === payload.slot));
       }
 
       logs.unshift({
@@ -1210,7 +1224,7 @@
       resetFormInputs();
       renderLogs();
       updateChart();
-    });
+    }
 
     function showOverwriteModal(payload, row) {
       const modal = document.getElementById('overwriteModal');
@@ -1220,9 +1234,9 @@
       modal.classList.add('active');
 
       document.getElementById('confirmOverwriteBtn').onclick = () => {
-        modal.classList.remove('active');
+        closeOverwriteModal();
         payload.overwrite = true;
-        document.getElementById('tempForm').dispatchEvent(new Event('submit'));
+        sendRecord(payload);
       };
     }
 
