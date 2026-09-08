@@ -98,7 +98,8 @@ function handleSubmit(payload) {
   const existing = rekod.getRange(targetRow, 3, 1, 5).getValues()[0];
   const hasData = existing.some(v => v !== '' && v != null);
 
-  if (hasData && !payload.overwrite) {
+  const isOverwrite = payload.overwrite === true || payload.overwrite === 'true';
+  if (hasData && !isOverwrite) {
     return { ok: false, already: true, row: targetRow };
   }
 
