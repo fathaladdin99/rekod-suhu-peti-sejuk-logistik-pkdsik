@@ -14,7 +14,7 @@
   <style>
     :root {
       --font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-      --bg-main: #f0f4f8;
+      --bg-main: #f0f4f9;
       --bg-card: #ffffff;
       --bg-subtle: #f8fafc;
       --border-color: #cbd5e1;
@@ -25,287 +25,278 @@
       --primary: #2563eb;
       --primary-dark: #1d4ed8;
       --primary-light: #eff6ff;
-      --primary-border: #bfdbfe;
 
-      --success: #16a34a;
+      --success: #15803d;
       --success-bg: #ecfdf5;
       --success-border: #a7f3d0;
 
-      --warning: #d97706;
+      --warning: #b45309;
       --warning-bg: #fffbeb;
       --warning-border: #fde68a;
 
-      --danger: #dc2626;
+      --danger: #b91c1c;
       --danger-bg: #fef2f2;
       --danger-border: #fecaca;
 
-      --radius-lg: 14px;
-      --radius-md: 10px;
-      --radius-sm: 7px;
+      --radius-lg: 12px;
+      --radius-md: 8px;
+      --radius-sm: 6px;
 
-      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
-      --shadow-md: 0 4px 16px -2px rgba(15, 23, 42, 0.08);
-      --shadow-lg: 0 12px 28px -4px rgba(15, 23, 42, 0.12);
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 12px -2px rgba(15, 23, 42, 0.08);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow-x: hidden;
+    }
 
     body {
       font-family: var(--font-family);
       background-color: var(--bg-main);
       color: var(--text-main);
-      line-height: 1.45;
-      padding-bottom: 40px;
+      line-height: 1.35;
       -webkit-font-smoothing: antialiased;
+      display: flex;
+      flex-direction: column;
     }
 
-    /* Top App Header */
+    /* Top App Header - Ultra Compact */
     .app-header {
       background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #2563eb 100%);
       color: white;
-      padding: 16px 16px 36px;
+      padding: 6px 12px 20px;
       position: relative;
-      box-shadow: 0 4px 20px rgba(30, 58, 138, 0.2);
       text-align: center;
+      flex-shrink: 0;
     }
 
     .header-container {
-      max-width: 580px;
+      max-width: 520px;
       margin: 0 auto;
       position: relative;
     }
 
     .brand-badge {
-      display: inline-flex;
-      align-items: center;
-      background: rgba(255, 255, 255, 0.18);
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.2);
       border: 1px solid rgba(255, 255, 255, 0.35);
-      padding: 3px 12px;
-      border-radius: 20px;
-      font-size: 0.7rem;
+      padding: 1px 8px;
+      border-radius: 12px;
+      font-size: 0.62rem;
       font-weight: 800;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
-      margin-bottom: 6px;
-      color: #f8fafc;
+      color: #f1f5f9;
+      margin-bottom: 2px;
     }
 
     .brand-title {
-      font-size: 1.35rem;
+      font-size: 1.05rem;
       font-weight: 800;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.01em;
       color: #ffffff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
+      line-height: 1.2;
     }
 
     .header-controls {
       position: absolute;
-      top: 0;
+      top: 2px;
       right: 0;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
     }
 
     .icon-btn {
       background: rgba(255, 255, 255, 0.18);
-      border: 1px solid rgba(255, 255, 255, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.35);
       color: white;
-      padding: 6px 10px;
-      border-radius: 8px;
+      padding: 4px 8px;
+      border-radius: 6px;
       font-family: inherit;
-      font-size: 0.78rem;
+      font-size: 0.72rem;
       font-weight: 700;
       cursor: pointer;
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 4px;
-      transition: all 0.2s ease;
-      backdrop-filter: blur(4px);
+      gap: 3px;
+      transition: all 0.15s ease;
     }
 
     .icon-btn:hover {
       background: rgba(255, 255, 255, 0.3);
-      transform: translateY(-1px);
     }
 
     /* Main Container */
     .main-wrapper {
-      max-width: 580px;
-      margin: -22px auto 0;
-      padding: 0 12px;
+      max-width: 520px;
+      width: 100%;
+      margin: -14px auto 0;
+      padding: 0 10px 10px;
       position: relative;
       z-index: 10;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
     }
 
-    /* Fridge Switcher Cards Grid */
+    /* Refrigerator Switcher Tabs - Single Row Compact */
     .fridge-tabs-grid {
       background: var(--bg-card);
-      padding: 8px;
-      border-radius: var(--radius-lg);
+      padding: 5px;
+      border-radius: var(--radius-md);
       box-shadow: var(--shadow-md);
-      margin-bottom: 12px;
+      margin-bottom: 6px;
       border: 1px solid var(--border-light);
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 6px;
-    }
-
-    @media (max-width: 480px) {
-      .fridge-tabs-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 6px;
-      }
+      gap: 5px;
+      flex-shrink: 0;
     }
 
     .tab-card {
       background: var(--bg-subtle);
-      border: 1.5px solid var(--border-light);
-      padding: 10px 4px;
-      border-radius: var(--radius-md);
+      border: 1.2px solid var(--border-light);
+      padding: 6px 2px;
+      border-radius: var(--radius-sm);
       font-family: inherit;
       color: var(--text-main);
       cursor: pointer;
-      transition: all 0.2s ease;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      gap: 2px;
+      transition: all 0.15s ease;
     }
 
     .tab-card .tab-icon {
-      font-size: 1.15rem;
+      font-size: 0.95rem;
       line-height: 1;
-      margin-bottom: 2px;
+      margin-bottom: 1px;
     }
 
     .tab-card .tab-title {
-      font-size: 0.82rem;
+      font-size: 0.72rem;
       font-weight: 700;
+      white-space: nowrap;
     }
 
     .tab-card .tab-sub {
-      font-size: 0.65rem;
+      font-size: 0.58rem;
       color: var(--text-muted);
       font-weight: 600;
-    }
-
-    .tab-card:hover {
-      border-color: var(--primary-border);
-      background: var(--primary-light);
+      line-height: 1;
     }
 
     .tab-card.active {
       background: var(--primary);
       color: white;
       border-color: var(--primary-dark);
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
     }
 
     .tab-card.active .tab-sub {
-      color: rgba(255, 255, 255, 0.88);
+      color: rgba(255, 255, 255, 0.9);
     }
 
-    /* Subheader Status Bar */
+    /* Subheader Info Bar */
     .status-strip {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 6px 10px;
-      margin-bottom: 12px;
-      font-size: 0.78rem;
+      padding: 1px 4px;
+      margin-bottom: 5px;
+      font-size: 0.7rem;
       font-weight: 700;
       color: var(--text-muted);
+      flex-shrink: 0;
     }
 
     .status-strip .strip-target {
       color: #0369a1;
       background: #e0f2fe;
-      padding: 3px 8px;
-      border-radius: 6px;
+      padding: 2px 6px;
+      border-radius: 4px;
       border: 1px solid #bae6fd;
+      font-size: 0.68rem;
     }
 
-    /* Segmented View Navigation (Borang / Sejarah / Trend) */
+    /* Segmented Navigation (Borang / Sejarah / Trend) */
     .view-segmented-nav {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 6px;
+      gap: 4px;
       background: #e2e8f0;
-      padding: 4px;
-      border-radius: 10px;
-      margin-bottom: 14px;
+      padding: 3px;
+      border-radius: 8px;
+      margin-bottom: 6px;
+      flex-shrink: 0;
     }
 
     .view-btn {
       background: transparent;
       border: none;
-      padding: 8px 4px;
-      border-radius: 8px;
+      padding: 5px 2px;
+      border-radius: 6px;
       font-family: inherit;
-      font-size: 0.82rem;
+      font-size: 0.74rem;
       font-weight: 700;
       color: var(--text-muted);
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 5px;
-      transition: all 0.2s ease;
+      gap: 3px;
+      transition: all 0.15s ease;
     }
 
     .view-btn.active {
       background: var(--bg-card);
       color: var(--primary);
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
     }
 
-    /* Form Container Card */
+    /* Form Container Card - Fit to Screen */
     .content-card {
       background: var(--bg-card);
       border-radius: var(--radius-lg);
-      padding: 18px 16px;
+      padding: 10px 12px;
       box-shadow: var(--shadow-md);
       border: 1px solid var(--border-light);
-      margin-bottom: 16px;
+      margin-bottom: 4px;
     }
 
-    /* Form Section Block */
+    /* Section Blocks */
     .form-block {
       border: 1px solid var(--border-light);
-      border-radius: var(--radius-md);
-      padding: 12px 14px;
-      margin-bottom: 12px;
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      margin-bottom: 6px;
       background: #ffffff;
     }
 
     .form-block-header {
-      font-size: 0.82rem;
+      font-size: 0.72rem;
       font-weight: 800;
       color: var(--text-main);
       display: flex;
       align-items: center;
-      gap: 6px;
-      margin-bottom: 10px;
+      gap: 4px;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
     }
 
     .form-grid-2 {
       display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 10px;
-      align-items: start;
-    }
-
-    @media (max-width: 440px) {
-      .form-grid-2 {
-        grid-template-columns: 1fr;
-        gap: 8px;
-      }
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 8px;
+      align-items: center;
     }
 
     .field-group {
@@ -314,37 +305,36 @@
     }
 
     .field-label {
-      font-size: 0.78rem;
+      font-size: 0.7rem;
       font-weight: 700;
       color: var(--text-muted);
-      margin-bottom: 4px;
+      margin-bottom: 2px;
     }
 
     .input-control {
       width: 100%;
-      height: 44px;
-      padding: 0 12px;
-      border: 1.5px solid var(--border-color);
+      height: 34px;
+      padding: 0 8px;
+      border: 1.2px solid var(--border-color);
       border-radius: var(--radius-sm);
       font-family: inherit;
-      font-size: 0.9rem;
+      font-size: 0.84rem;
       color: var(--text-main);
       background: #ffffff;
-      transition: all 0.2s ease;
     }
 
     .input-control:focus {
       outline: none;
       border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
     }
 
     /* Slot (AM / PM) Pill Selector */
     .slot-pill-group {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 6px;
-      height: 44px;
+      gap: 4px;
+      height: 34px;
     }
 
     .slot-pill { position: relative; }
@@ -352,41 +342,41 @@
 
     .slot-label {
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
       height: 100%;
-      border: 1.5px solid var(--border-color);
+      border: 1.2px solid var(--border-color);
       border-radius: var(--radius-sm);
       background: var(--bg-subtle);
       cursor: pointer;
       font-weight: 700;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       color: var(--text-muted);
-      transition: all 0.2s ease;
+      transition: all 0.15s ease;
       user-select: none;
+      padding: 0 2px;
     }
 
     .slot-pill input:checked + .slot-label {
       background: var(--primary);
       border-color: var(--primary-dark);
       color: #ffffff;
-      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+      box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
     }
 
     /* Session Window Info Banner */
     .session-info-badge {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 4px;
       background: var(--success-bg);
       border: 1px solid var(--success-border);
       color: var(--success);
-      padding: 6px 10px;
+      padding: 3px 6px;
       border-radius: var(--radius-sm);
-      font-size: 0.75rem;
+      font-size: 0.68rem;
       font-weight: 700;
-      margin-top: 8px;
+      margin-top: 5px;
     }
 
     .session-info-badge.out-window {
@@ -399,7 +389,7 @@
     .temp-grid-3 {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
+      gap: 6px;
     }
 
     .temp-col {
@@ -410,45 +400,47 @@
     }
 
     .temp-label {
-      font-size: 0.74rem;
+      font-size: 0.68rem;
       font-weight: 800;
       color: var(--text-muted);
-      margin-bottom: 4px;
+      margin-bottom: 2px;
       text-transform: uppercase;
     }
 
     .temp-input {
       width: 100%;
-      height: 46px;
+      height: 38px;
       text-align: center;
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       font-weight: 800;
       border: 1.5px solid var(--border-color);
       border-radius: var(--radius-sm);
       color: var(--text-main);
       background: #ffffff;
-      transition: all 0.2s ease;
     }
 
     .temp-input.highlight {
       border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
     }
 
     .temp-input:focus {
       outline: none;
       border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25);
     }
 
     .temp-alert-badge {
-      font-size: 0.68rem;
+      font-size: 0.62rem;
       font-weight: 700;
-      padding: 2px 6px;
-      border-radius: 4px;
-      margin-top: 4px;
+      padding: 1px 4px;
+      border-radius: 3px;
+      margin-top: 2px;
       width: 100%;
       text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .temp-alert-badge.ok {
@@ -467,9 +459,9 @@
     .remember-group {
       display: flex;
       align-items: center;
-      gap: 6px;
-      margin-top: 8px;
-      font-size: 0.76rem;
+      gap: 5px;
+      margin-top: 4px;
+      font-size: 0.7rem;
       font-weight: 600;
       color: var(--text-muted);
       cursor: pointer;
@@ -477,112 +469,108 @@
     }
 
     .remember-group input[type="checkbox"] {
-      width: 15px;
-      height: 15px;
+      width: 13px;
+      height: 13px;
       accent-color: var(--primary);
       cursor: pointer;
     }
 
-    /* Collapsible Issues & Incident Box */
+    /* Collapsible Issues Accordion */
     .accordion-toggle {
       width: 100%;
       display: flex;
       align-items: center;
       justify-content: space-between;
       background: var(--bg-subtle);
-      border: 1.5px solid var(--border-color);
-      border-radius: var(--radius-md);
-      padding: 10px 14px;
+      border: 1.2px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 6px 10px;
       font-family: inherit;
-      font-size: 0.82rem;
+      font-size: 0.74rem;
       font-weight: 700;
       color: var(--text-main);
       cursor: pointer;
-      transition: all 0.2s ease;
-      margin-bottom: 12px;
+      transition: all 0.15s ease;
+      margin-bottom: 6px;
       text-align: left;
     }
 
     .accordion-toggle:hover {
       background: #f1f5f9;
-      border-color: #94a3b8;
     }
 
     .accordion-body {
-      border: 1.5px solid var(--border-color);
-      border-radius: var(--radius-md);
-      padding: 14px;
+      border: 1.2px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 10px;
       background: #ffffff;
-      margin-bottom: 12px;
+      margin-bottom: 6px;
       display: none;
     }
 
     .accordion-body.open {
       display: block;
-      animation: fadeIn 0.2s ease;
+      animation: fadeIn 0.15s ease;
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-4px); }
+      from { opacity: 0; transform: translateY(-2px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Actions Buttons */
+    /* Action Buttons - Compact */
     .btn-row {
       display: grid;
-      grid-template-columns: 1fr 2fr;
-      gap: 10px;
-      margin-top: 14px;
+      grid-template-columns: 0.8fr 2.2fr;
+      gap: 8px;
+      margin-top: 6px;
     }
 
     .btn {
-      height: 46px;
-      border-radius: var(--radius-md);
+      height: 38px;
+      border-radius: var(--radius-sm);
       font-family: inherit;
       font-weight: 700;
-      font-size: 0.9rem;
+      font-size: 0.86rem;
       cursor: pointer;
       border: none;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      transition: all 0.2s ease;
+      gap: 4px;
       user-select: none;
     }
 
     .btn-secondary {
       background: #ffffff;
       color: var(--text-main);
-      border: 1.5px solid var(--border-color);
+      border: 1.2px solid var(--border-color);
     }
 
     .btn-secondary:hover {
       background: var(--bg-subtle);
-      border-color: #94a3b8;
     }
 
     .btn-primary {
       background: var(--primary);
       color: #ffffff;
-      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+      box-shadow: 0 2px 10px rgba(37, 99, 235, 0.35);
     }
 
     .btn-primary:hover {
       background: var(--primary-dark);
-      transform: translateY(-1px);
     }
 
     .btn-primary:disabled {
       background: #93c5fd;
       cursor: not-allowed;
-      transform: none;
       box-shadow: none;
     }
 
-    /* Table Styles for History View */
+    /* History Table View */
     .table-container {
       overflow-x: auto;
+      max-height: calc(100vh - 200px);
       border-radius: var(--radius-sm);
       border: 1px solid var(--border-light);
     }
@@ -590,7 +578,7 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       text-align: left;
     }
 
@@ -598,13 +586,13 @@
       background: var(--bg-subtle);
       color: var(--text-muted);
       font-weight: 800;
-      padding: 10px 10px;
+      padding: 6px 8px;
       border-bottom: 1px solid var(--border-color);
       white-space: nowrap;
     }
 
     td {
-      padding: 10px 10px;
+      padding: 6px 8px;
       border-bottom: 1px solid var(--border-light);
       white-space: nowrap;
     }
@@ -618,7 +606,7 @@
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
       background: rgba(15, 23, 42, 0.65);
-      backdrop-filter: blur(4px);
+      backdrop-filter: blur(3px);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -626,7 +614,7 @@
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.2s ease;
-      padding: 16px;
+      padding: 14px;
     }
 
     .modal-overlay.active {
@@ -636,21 +624,21 @@
 
     .modal-box {
       background: var(--bg-card);
-      padding: 20px;
+      padding: 16px;
       border-radius: var(--radius-lg);
-      max-width: 440px;
+      max-width: 400px;
       width: 100%;
-      box-shadow: var(--shadow-lg);
+      box-shadow: var(--shadow-md);
       border: 1px solid var(--border-light);
       position: relative;
     }
 
     .close-x-btn {
       position: absolute;
-      top: 12px; right: 14px;
+      top: 10px; right: 12px;
       background: transparent;
       border: none;
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       font-weight: 700;
       color: var(--text-muted);
       cursor: pointer;
@@ -681,27 +669,27 @@
   <!-- Main Content Container -->
   <main class="main-wrapper">
 
-    <!-- Refrigerator Selector Cards -->
+    <!-- Refrigerator Selector Cards - 4 in 1 Row -->
     <div class="fridge-tabs-grid">
       <button class="tab-card active" data-fridge="PETI_SEJUK_1" onclick="switchFridge('PETI_SEJUK_1')">
         <span class="tab-icon">🧊</span>
-        <span class="tab-title">Peti Sejuk 1</span>
-        <span class="tab-sub">2°C - 8°C</span>
+        <span class="tab-title">Peti 1</span>
+        <span class="tab-sub">2°- 8°C</span>
       </button>
       <button class="tab-card" data-fridge="PETI_SEJUK_2" onclick="switchFridge('PETI_SEJUK_2')">
         <span class="tab-icon">💉</span>
-        <span class="tab-title">Peti Sejuk 2</span>
-        <span class="tab-sub">2°C - 8°C</span>
+        <span class="tab-title">Peti 2</span>
+        <span class="tab-sub">2°- 8°C</span>
       </button>
       <button class="tab-card" data-fridge="PETI_SEJUK_3" onclick="switchFridge('PETI_SEJUK_3')">
         <span class="tab-icon">📦</span>
-        <span class="tab-title">Peti Sejuk 3</span>
-        <span class="tab-sub">2°C - 8°C</span>
+        <span class="tab-title">Peti 3</span>
+        <span class="tab-sub">2°- 8°C</span>
       </button>
       <button class="tab-card" data-fridge="PETI_SEJUK_4" onclick="switchFridge('PETI_SEJUK_4')">
         <span class="tab-icon">❄️</span>
-        <span class="tab-title">Peti Sejuk 4</span>
-        <span class="tab-sub">2°C - 8°C</span>
+        <span class="tab-title">Peti 4</span>
+        <span class="tab-sub">2°- 8°C</span>
       </button>
     </div>
 
@@ -724,7 +712,7 @@
       </button>
     </div>
 
-    <!-- 1. VIEW: BORANG INPUT -->
+    <!-- 1. VIEW: BORANG INPUT (ONE PAGE NO SCROLL) -->
     <section id="viewForm" class="content-card">
       <form id="tempForm">
 
@@ -802,7 +790,7 @@
         </button>
 
         <div id="accordionBody" class="accordion-body">
-          <div class="field-group" style="margin-bottom: 12px;">
+          <div class="field-group" style="margin-bottom: 8px;">
             <label class="field-label" for="perkaraSelect">Pilih Perkara Jika Ada Masalah</label>
             <select id="perkaraSelect" name="perkara" class="input-control">
               <option value="">-- Normal / Tiada Isu --</option>
@@ -814,18 +802,18 @@
             </select>
           </div>
 
-          <div style="display: flex; gap: 14px; align-items: center; margin-bottom: 10px;">
-            <span style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted);">Aktifkan Incident Log?</span>
-            <label style="font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+          <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 8px;">
+            <span style="font-size: 0.72rem; font-weight: 700; color: var(--text-muted);">Aktifkan Incident Log?</span>
+            <label style="font-size: 0.75rem; cursor: pointer; display: flex; align-items: center; gap: 3px;">
               <input type="radio" id="incidentNo" name="incidentEnable" value="no" checked onclick="toggleIncidentFields(false)"> Tidak
             </label>
-            <label style="font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+            <label style="font-size: 0.75rem; cursor: pointer; display: flex; align-items: center; gap: 3px;">
               <input type="radio" id="incidentYes" name="incidentEnable" value="yes" onclick="toggleIncidentFields(true)"> Ya
             </label>
           </div>
 
-          <div id="incidentFieldsBox" class="hidden" style="border-top: 1px dashed var(--border-color); padding-top: 10px;">
-            <div class="form-grid-2" style="margin-bottom: 10px;">
+          <div id="incidentFieldsBox" class="hidden" style="border-top: 1px dashed var(--border-color); padding-top: 8px;">
+            <div class="form-grid-2" style="margin-bottom: 8px;">
               <div class="field-group">
                 <label class="field-label" for="incidentDate">Tarikh Kejadian</label>
                 <input type="date" id="incidentDate" class="input-control" />
@@ -836,14 +824,14 @@
               </div>
             </div>
 
-            <div class="field-group" style="margin-bottom: 10px;">
+            <div class="field-group" style="margin-bottom: 8px;">
               <label class="field-label" for="incidentOfficer">Nama Pegawai Bertanggungjawab</label>
               <input type="text" id="incidentOfficer" class="input-control" placeholder="Nama Pegawai Penjelas" />
             </div>
 
             <div class="field-group">
               <label class="field-label" for="incidentNote">Penjelasan / Tindakan Pembetulan</label>
-              <textarea id="incidentNote" class="input-control" style="height: 70px; padding-top: 8px;" placeholder="Sila nyatakan tindakan susulan yang diambil..."></textarea>
+              <textarea id="incidentNote" class="input-control" style="height: 55px; padding-top: 6px;" placeholder="Sila nyatakan tindakan susulan yang diambil..."></textarea>
             </div>
           </div>
         </div>
@@ -859,9 +847,9 @@
 
     <!-- 2. VIEW: SEJARAH REKOD -->
     <section id="viewHistory" class="content-card hidden">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-        <h3 style="font-size: 0.95rem; font-weight: 800; color: var(--text-main);">📋 Sejarah Rekod Suhu</h3>
-        <button class="icon-btn" onclick="exportCSV()" style="background: #2563eb; color: #fff; padding: 4px 8px; font-size: 0.72rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <h3 style="font-size: 0.88rem; font-weight: 800; color: var(--text-main);">📋 Sejarah Rekod Suhu</h3>
+        <button class="icon-btn" onclick="exportCSV()" style="background: #2563eb; color: #fff; padding: 3px 6px; font-size: 0.68rem;">
           📥 Download CSV
         </button>
       </div>
@@ -880,7 +868,7 @@
             </tr>
           </thead>
           <tbody id="logTableBody">
-            <tr><td colspan="8" style="text-align:center; color:var(--text-muted); padding:16px;">Memuatkan data...</td></tr>
+            <tr><td colspan="8" style="text-align:center; color:var(--text-muted); padding:12px;">Memuatkan data...</td></tr>
           </tbody>
         </table>
       </div>
@@ -888,10 +876,10 @@
 
     <!-- 3. VIEW: TREND CHART -->
     <section id="viewChart" class="content-card hidden">
-      <h3 id="chartTitle" style="font-size: 0.95rem; font-weight: 800; color: var(--text-main); margin-bottom: 12px;">
+      <h3 id="chartTitle" style="font-size: 0.88rem; font-weight: 800; color: var(--text-main); margin-bottom: 8px;">
         📈 Trend Bacaan Suhu
       </h3>
-      <div style="height: 260px; position: relative;">
+      <div style="height: 220px; position: relative;">
         <canvas id="tempChart"></canvas>
       </div>
     </section>
@@ -902,14 +890,14 @@
   <div id="settingsModal" class="modal-overlay">
     <div class="modal-box">
       <button type="button" class="close-x-btn" onclick="closeSettings()">&times;</button>
-      <h3 style="font-size: 1.05rem; font-weight: 800; color: var(--text-main); margin-bottom: 6px;">⚙️ Tetapan Server & Security</h3>
-      <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px;">
+      <h3 style="font-size: 0.95rem; font-weight: 800; color: var(--text-main); margin-bottom: 4px;">⚙️ Tetapan Server & Security</h3>
+      <p style="font-size: 0.74rem; color: var(--text-muted); margin-bottom: 10px;">
         Masukkan PIN Admin untuk mengemas kini Google Apps Script Web App URL.
       </p>
 
       <div id="pinBox">
         <label class="field-label" for="adminPin">PIN Security Admin</label>
-        <input type="password" id="adminPin" class="input-control" placeholder="Masukkan PIN Rahsia Admin" style="margin-bottom: 12px;" />
+        <input type="password" id="adminPin" class="input-control" placeholder="Masukkan PIN Rahsia Admin" style="margin-bottom: 10px;" />
         <div class="btn-row">
           <button type="button" class="btn btn-secondary" onclick="closeSettings()">Batal</button>
           <button type="button" class="btn btn-primary" onclick="unlockAdmin()">Buka Tetapan</button>
@@ -918,7 +906,7 @@
 
       <div id="urlBox" class="hidden">
         <label class="field-label" for="webAppUrl">Google Apps Script Web App URL</label>
-        <input type="url" id="webAppUrl" class="input-control" placeholder="https://script.google.com/macros/s/.../exec" style="margin-bottom: 14px;" />
+        <input type="url" id="webAppUrl" class="input-control" placeholder="https://script.google.com/macros/s/.../exec" style="margin-bottom: 10px;" />
         <div class="btn-row">
           <button type="button" class="btn btn-secondary" onclick="closeSettings()">Batal</button>
           <button type="button" class="btn btn-primary" onclick="saveSettings()">Simpan URL</button>
@@ -930,8 +918,8 @@
   <!-- Overwrite Modal -->
   <div id="overwriteModal" class="modal-overlay">
     <div class="modal-box">
-      <h3 style="color: var(--warning); font-size: 1.05rem; font-weight: 800; margin-bottom: 6px;">⚠️ Rekod Sudah Wujud!</h3>
-      <p id="overwriteDataText" style="font-size: 0.85rem; color: var(--text-main); margin-bottom: 14px;">
+      <h3 style="color: var(--warning); font-size: 0.95rem; font-weight: 800; margin-bottom: 4px;">⚠️ Rekod Sudah Wujud!</h3>
+      <p id="overwriteDataText" style="font-size: 0.78rem; color: var(--text-main); margin-bottom: 12px;">
         Data untuk tarikh ini telah wujud di Google Sheet. Adakah anda ingin mengemas kini (overwrite)?
       </p>
       <div class="btn-row">
@@ -944,8 +932,8 @@
   <!-- Success Notification Modal -->
   <div id="successModal" class="modal-overlay">
     <div class="modal-box" style="text-align: center;">
-      <h2 style="color: var(--success); font-size: 1.25rem; font-weight: 800; margin-bottom: 6px;">✅ Berjaya!</h2>
-      <p id="successText" style="font-size: 0.85rem; color: var(--text-main);">Rekod suhu telah berjaya disimpan.</p>
+      <h2 style="color: var(--success); font-size: 1.15rem; font-weight: 800; margin-bottom: 4px;">✅ Berjaya!</h2>
+      <p id="successText" style="font-size: 0.8rem; color: var(--text-main);">Rekod suhu telah berjaya disimpan.</p>
     </div>
   </div>
 
@@ -1248,14 +1236,14 @@
 
       if (filtered.length === 0) {
         const fridgeName = (CONFIG.fridges[currentFridge] || {}).name || currentFridge;
-        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:var(--text-muted); padding:16px;">Tiada rekod disimpan untuk ${fridgeName} lagi.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:var(--text-muted); padding:10px;">Tiada rekod disimpan untuk ${fridgeName} lagi.</td></tr>`;
         return;
       }
 
       tbody.innerHTML = filtered.slice(0, 15).map(r => `
         <tr>
           <td><b>${r.date}</b></td>
-          <td><span style="font-size:0.75rem; font-weight:700; background:#e0f2fe; color:#0369a1; padding:2px 6px; border-radius:4px;">${r.slot}</span></td>
+          <td><span style="font-size:0.72rem; font-weight:700; background:#e0f2fe; color:#0369a1; padding:1px 5px; border-radius:3px;">${r.slot}</span></td>
           <td>${r.min !== '' ? r.min + ' °C' : '-'}</td>
           <td><b>${r.semasa !== '' ? r.semasa + ' °C' : '-'}</b></td>
           <td>${r.max !== '' ? r.max + ' °C' : '-'}</td>
@@ -1318,7 +1306,7 @@
         ? 'Rekod suhu telah berjaya dihantar ke Google Spreadsheet!'
         : 'Rekod telah disimpan secara tempatan (Local Storage).';
       modal.classList.add('active');
-      setTimeout(() => modal.classList.remove('active'), 2000);
+      setTimeout(() => modal.classList.remove('active'), 1800);
     }
 
     function exportCSV() {
@@ -1368,12 +1356,12 @@
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
-            legend: { position: 'top', labels: { boxWidth: 12, font: { size: 11, family: 'Plus Jakarta Sans' } } },
+            legend: { position: 'top', labels: { boxWidth: 10, font: { size: 10, family: 'Plus Jakarta Sans' } } },
             title: { display: false }
           },
           scales: {
-            y: { ticks: { font: { size: 10 } } },
-            x: { ticks: { font: { size: 10 } } }
+            y: { ticks: { font: { size: 9 } } },
+            x: { ticks: { font: { size: 9 } } }
           }
         }
       });
